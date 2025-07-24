@@ -1,0 +1,7 @@
+feat: Configuração inicial do projeto
+
+Este commit inclui a configuração inicial do projeto Flutter, incluindo:
+- Estrutura do projeto
+- Arquivos e pastas básicos
+- Dependências conforme definido em pubspec.yaml
+- Configurações específicas da plataforma para Android, iOS, Linux, macOS, Web e Windows.
