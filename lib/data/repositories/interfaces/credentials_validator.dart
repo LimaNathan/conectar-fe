@@ -1,4 +1,4 @@
-import 'package:conectar_users_fe/models/auth/credentials.dart';
+import 'package:conectar_users_fe/models/auth/dto/credentials.dart';
 import 'package:lucid_validation/lucid_validation.dart';
 
 class CredentialsValidator extends LucidValidator<Credentials> {

@@ -1,5 +1,8 @@
 import 'package:flutter/foundation.dart';
 
+// Representa void;
+const unit = Unit();
+
 class Result<T> {
   const Result();
 }

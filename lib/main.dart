@@ -17,10 +17,13 @@ class MyApp extends StatelessWidget {
       providers: providers,
       child: ShadApp.router(
         routerConfig: appRouter,
-        title: 'SaborIA',
+        title: 'Conéctar',
         theme: ShadThemeData(
           brightness: Brightness.light,
-          colorScheme: ShadGreenColorScheme.light(),
+          colorScheme: ShadGreenColorScheme.light(
+            primary: Color(0xff19af78),
+            primaryForeground: Color(0xff8cd7b9),
+          ),
         ),
       ),
     );

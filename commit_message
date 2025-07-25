@@ -1,7 +1,6 @@
-feat: Configuração inicial do projeto
+feat: Implement user creation and update
 
-Este commit inclui a configuração inicial do projeto Flutter, incluindo:
-- Estrutura do projeto
-- Arquivos e pastas básicos
-- Dependências conforme definido em pubspec.yaml
-- Configurações específicas da plataforma para Android, iOS, Linux, macOS, Web e Windows.
+- Add CreateUserDto and UpdateUserDto
+- Implement user creation and update logic
+- Add new routes for user creation and update
+- Update dependencies
