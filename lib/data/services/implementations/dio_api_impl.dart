@@ -1,5 +1,4 @@
 import 'dart:developer';
-import 'dart:io';
 
 import 'package:conectar_users_fe/data/interceptors/implementations/dio_api_interceptor.dart';
 import 'package:conectar_users_fe/data/services/interfaces/api_interface.dart';
@@ -19,6 +18,7 @@ class DioApiImpl implements ApiInterface<Response?> {
       DioApiInteceptorImpl().interceptor,
       RetryInterceptor(
         dio: _dio,
+        retries: 5,
         retryDelays: [2.seconds],
         logPrint: (message) {
           return log(message, name: 'RETRY INTERCEPTOR');
@@ -31,14 +31,27 @@ class DioApiImpl implements ApiInterface<Response?> {
   static const String _baseUrl = String.fromEnvironment('BASE_URL');
   final LocalStorageInterface _localStorage;
 
-  final _headers = {};
-
   Future _checkHeaders() async {
-    if (!_headers.containsKey(HttpHeaders.authorizationHeader)) {
+    if (!_dio.options.headers.containsKey('Authorization')) {
+      log('Não tem o authorization no header, buscando...', name: 'DIO');
       final String? token = await _localStorage.getValue('access_token');
 
       if (token != null) {
-        _headers.addAll({HttpHeaders.authorizationHeader: 'Bearer $token'});
+        log('Token encontrado, adicionando aos headers...', name: 'DIO');
+        final tokenHeader = {'Authorization': 'Bearer $token'};
+        log('   $tokenHeader', name: 'DIO');
+        _dio.options.headers.addAll(tokenHeader);
+
+        if (_dio.options.headers.containsKey('Authorization')) {
+          log('Header adicionado com sucesso!', name: 'DIO');
+        } else {
+          log(
+            'O header `Authorization` não foi adicionado aos demais headers',
+            name: 'DIO',
+          );
+        }
+      } else {
+        log('Não tem token...', name: 'DIO');
       }
     }
   }

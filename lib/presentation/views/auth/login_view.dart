@@ -16,12 +16,12 @@ class LoginView extends StatefulWidget {
 }
 
 class _LoginViewState extends State<LoginView> {
-  late final LoginViewModel _loginViewModel;
+  late final LoginViewmodel _loginViewModel;
 
   @override
   void initState() {
     super.initState();
-    _loginViewModel = context.read<LoginViewModel>();
+    _loginViewModel = context.read<LoginViewmodel>();
     _loginViewModel.loginCommand.addListener(_onLoginResult);
   }
 
@@ -39,7 +39,7 @@ class _LoginViewState extends State<LoginView> {
           description: Text('Login realizado com sucesso.'),
         ),
       );
-      context.go('/home');
+      context.go('/clients/list');
     } else if (_loginViewModel.loginCommand.hasError) {
       ShadToaster.of(context).show(
         ShadToast.destructive(

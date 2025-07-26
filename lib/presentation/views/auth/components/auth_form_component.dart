@@ -13,7 +13,7 @@ class AuthFormComponent extends StatefulWidget {
 }
 
 class _AuthFormComponentState extends State<AuthFormComponent> {
-  late final LoginViewModel vm;
+  late final LoginViewmodel vm;
   final _formKey = GlobalKey<ShadFormState>();
   Credentials _credentials = Credentials(email: '', password: '');
   final _credentialsValidator = CredentialsValidator();
@@ -23,7 +23,7 @@ class _AuthFormComponentState extends State<AuthFormComponent> {
   @override
   void initState() {
     super.initState();
-    vm = context.read<LoginViewModel>();
+    vm = context.read<LoginViewmodel>();
   }
 
   @override

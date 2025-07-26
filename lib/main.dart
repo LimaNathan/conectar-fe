@@ -20,9 +20,13 @@ class MyApp extends StatelessWidget {
         title: 'Conéctar',
         theme: ShadThemeData(
           brightness: Brightness.light,
+          cardTheme: ShadCardTheme(
+            border: Border.all(color: Colors.transparent),
+          ),
           colorScheme: ShadGreenColorScheme.light(
             primary: Color(0xff19af78),
             primaryForeground: Color(0xff8cd7b9),
+            background: Color(0xfffafafa),
           ),
         ),
       ),
