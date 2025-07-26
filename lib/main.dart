@@ -26,6 +26,7 @@ class MyApp extends StatelessWidget {
           colorScheme: ShadGreenColorScheme.light(
             primary: Color(0xff19af78),
             primaryForeground: Color(0xff8cd7b9),
+            accent: Color(0xffe1f5f0),
             background: Color(0xfffafafa),
           ),
         ),

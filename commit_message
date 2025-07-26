@@ -1,6 +1,23 @@
-feat: Implement user creation and update
+feat: Implementa listagem e filtros de clientes
 
-- Add CreateUserDto and UpdateUserDto
-- Implement user creation and update logic
-- Add new routes for user creation and update
-- Update dependencies
+Este commit introduz a funcionalidade de listagem e filtros de clientes, abrangendo:
+
+- **DTOs e Repositórios:**
+  - Criação dos DTOs `ClientDTO` e `ClientsPaginationQueryDTO` para a comunicação com a API.
+  - Definição da interface `IClientsRepository` para o contrato do repositório de clientes.
+
+- **Gerenciamento de Estado:**
+  - Adição do `ClientViewModel` para gerenciar o estado da lista de clientes e dos filtros.
+
+- **Componentes e Views:**
+  - Desenvolvimento do `ClientsListView` para exibir a lista de clientes.
+  - Implementação do `ClientsFiltersComponent` para permitir a filtragem dos clientes.
+  - Criação da `ClientsView` para agrupar os componentes de listagem e filtros.
+
+- **Navegação e Rotas:**
+  - Adição da rota para a tela de clientes em `AppRoutes`.
+
+- **Refatorações e Melhorias:**
+  - Remoção das pastas de plataforma nativa (android, ios, linux, macos, windows) para focar no desenvolvimento web.
+  - Atualizações em `pubspec.yaml` e `pubspec.lock` para incluir novas dependências.
+  - Pequenas refatorações no `LocalStorageImpl` e `DioApiImpl`.

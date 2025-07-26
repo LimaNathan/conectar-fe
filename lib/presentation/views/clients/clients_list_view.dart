@@ -57,6 +57,7 @@ class _ClientsListViewState extends State<ClientsListView> {
     return ListenableBuilder(
       listenable: clientViewmodel.getAllCommand,
       builder: (context, _) {
+        final columnHeaderTextTheme = textTheme.h4.copyWith(fontSize: 16);
         return Column(
           spacing: size.height * .03,
           children: [
@@ -144,7 +145,6 @@ class _ClientsListViewState extends State<ClientsListView> {
 
                       child: ShadTable.list(
                         verticalScrollPhysics: NeverScrollableScrollPhysics(),
-
                         columnSpanExtent: (column) {
                           if (column == 0) {
                             return FixedSpanExtent(size.width * .25);
@@ -152,20 +152,46 @@ class _ClientsListViewState extends State<ClientsListView> {
                           if (column == 1) {
                             return FixedSpanExtent(size.width * .1);
                           }
-                          if (column == 2) {
-                            return FixedSpanExtent(size.width * .15);
-                          }
 
-                          return null;
+                          return FixedSpanExtent(size.width * .15);
                         },
 
+                        rowSpanBackgroundDecoration: (row) {
+                          if (row == 0) {
+                            return TableSpanDecoration(
+                              color: colorScheme.accent,
+                            );
+                          }
+                          return null;
+                        },
                         header: [
-                          ShadTableCell.header(child: Text('Razão social')),
-                          ShadTableCell.header(child: Text('CNPJ')),
-                          ShadTableCell.header(child: Text('Nome de fachada')),
-                          ShadTableCell.header(child: Text('Tags')),
-                          ShadTableCell.header(child: Text('Status')),
-                          ShadTableCell.header(child: Text('Conecta+')),
+                          ShadTableCell.header(
+                            child: Text(
+                              'Razão social',
+                              style: columnHeaderTextTheme,
+                            ),
+                          ),
+                          ShadTableCell.header(
+                            child: Text('CNPJ', style: columnHeaderTextTheme),
+                          ),
+                          ShadTableCell.header(
+                            child: Text(
+                              'Nome de fachada',
+                              style: columnHeaderTextTheme,
+                            ),
+                          ),
+                          ShadTableCell.header(
+                            child: Text('Tags', style: columnHeaderTextTheme),
+                          ),
+                          ShadTableCell.header(
+                            child: Text('Status', style: columnHeaderTextTheme),
+                          ),
+                          ShadTableCell.header(
+                            child: Text(
+                              'Conecta+',
+                              style: columnHeaderTextTheme,
+                            ),
+                          ),
                         ],
 
                         children: [
