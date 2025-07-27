@@ -3,6 +3,7 @@
 import 'dart:developer';
 
 import 'package:conectar_users_fe/data/interceptors/interfaces/api_interceptor.dart';
+import 'package:conectar_users_fe/data/services/implementations/auth_redirect_impl.dart';
 import 'package:dio/dio.dart';
 
 class DioApiInteceptorImpl implements ApiInterceptor<Interceptor> {
@@ -40,6 +41,10 @@ class DioApiInteceptorImpl implements ApiInterceptor<Interceptor> {
       final statusCode = error.response?.statusCode;
       final errorMessage = _getMessage(error, statusCode);
 
+      if (statusCode == 401) {
+        AuthRedirectImpl().notifyUnauthorized();
+      }
+
       return handler.reject(
         DioException(
           requestOptions: error.requestOptions,
@@ -61,6 +66,10 @@ class DioApiInteceptorImpl implements ApiInterceptor<Interceptor> {
         error.response?.data['error'] != null) {
       final element = error.response!.data['error'];
       message = '$message $element';
+    }
+
+    if (message == 'Unauthorized') {
+      message == null;
     }
 
     return switch (error.type) {

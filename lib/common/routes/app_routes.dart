@@ -1,3 +1,4 @@
+import 'package:conectar_users_fe/data/services/implementations/auth_redirect_impl.dart';
 import 'package:conectar_users_fe/presentation/views/auth/login_view.dart';
 import 'package:conectar_users_fe/presentation/views/clients/clients_list_view.dart';
 import 'package:conectar_users_fe/presentation/views/clients/clients_view.dart';
@@ -7,6 +8,16 @@ import 'package:go_router/go_router.dart';
 
 final appRouter = GoRouter(
   routerNeglect: true,
+  redirect: (context, state) {
+    final authService = AuthRedirectImpl();
+
+    if (authService.unauthorized) {
+      authService.reset();
+      return '/';
+    }
+
+    return null;
+  },
   routes: [
     GoRoute(
       path: '/',

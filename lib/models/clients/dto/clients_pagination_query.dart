@@ -49,4 +49,28 @@ class ClientsPaginationQuery {
     }
     return json;
   }
+
+  factory ClientsPaginationQuery.fowardPage(ClientsPaginationQuery query) {
+    return ClientsPaginationQuery(
+      page: query.page != null ? query.page! + 1 : null,
+      size: query.size,
+      order: query.order,
+      cnpj: query.cnpj,
+      corporateReason: query.corporateReason,
+      presentationName: query.presentationName,
+      tags: query.tags,
+    );
+  }
+
+  factory ClientsPaginationQuery.backPage(ClientsPaginationQuery query) {
+    return ClientsPaginationQuery(
+      page: query.page != null ? query.page! - 1 : null,
+      size: query.size,
+      order: query.order,
+      cnpj: query.cnpj,
+      corporateReason: query.corporateReason,
+      presentationName: query.presentationName,
+      tags: query.tags,
+    );
+  }
 }

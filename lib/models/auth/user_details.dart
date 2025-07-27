@@ -1,0 +1,34 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'dart:convert';
+
+class UserDetails {
+  int? sub;
+  String? email;
+  String? role;
+  UserDetails({this.sub, this.email, this.role});
+
+  UserDetails copyWith({int? sub, String? email, String? role}) {
+    return UserDetails(
+      sub: sub ?? this.sub,
+      email: email ?? this.email,
+      role: role ?? this.role,
+    );
+  }
+
+  Map<String, dynamic> toMap() {
+    return <String, dynamic>{'sub': sub, 'email': email, 'role': role};
+  }
+
+  factory UserDetails.fromMap(Map<String, dynamic> map) {
+    return UserDetails(
+      sub: map['sub'] != null ? map['sub'] as int : null,
+      email: map['email'] != null ? map['email'] as String : null,
+      role: map['role'] != null ? map['role'] as String : null,
+    );
+  }
+
+  String toJson() => json.encode(toMap());
+
+  factory UserDetails.fromJson(String source) =>
+      UserDetails.fromMap(json.decode(source) as Map<String, dynamic>);
+}

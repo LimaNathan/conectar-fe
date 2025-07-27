@@ -12,14 +12,15 @@ class DioApiImpl implements ApiInterface<Response?> {
     _dio.options = BaseOptions(
       headers: {..._dio.options.headers, 'Content-Type': 'application/json'},
       baseUrl: _baseUrl,
-      connectTimeout: 10.seconds,
+      connectTimeout: 20.seconds,
     );
     _dio.interceptors.addAll([
       DioApiInteceptorImpl().interceptor,
       RetryInterceptor(
         dio: _dio,
         retries: 5,
-        retryDelays: [2.seconds],
+
+        retryDelays: [2.seconds, 2.seconds, 2.seconds, 2.seconds, 2.seconds],
         logPrint: (message) {
           return log(message, name: 'RETRY INTERCEPTOR');
         },
