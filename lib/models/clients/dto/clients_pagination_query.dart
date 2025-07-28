@@ -4,13 +4,14 @@ enum OrderDirection { asc, desc }
 
 class ClientsPaginationQuery {
   int? page;
-
   int? size;
   OrderDirection? order;
   String? presentationName;
   String? cnpj;
   String? corporateReason;
   List<String>? tags;
+  bool? status;
+  bool? conectaPlus;
 
   ClientsPaginationQuery({
     this.page = 0,
@@ -20,6 +21,8 @@ class ClientsPaginationQuery {
     this.cnpj,
     this.corporateReason,
     this.tags,
+    this.status,
+    this.conectaPlus,
   });
 
   Map<String, dynamic> toJson() {
@@ -45,32 +48,46 @@ class ClientsPaginationQuery {
       json.addAll({'corporateReason': corporateReason});
     }
     if (tags != null) {
-      json.addAll({'tags': tags});
+      json.addAll({'tags': tags as List<String>});
     }
+
+    if (status != null) {
+      json.addAll({'status': status});
+    }
+
+    if (conectaPlus != null) {
+      json.addAll({'conectaPlus': conectaPlus});
+    }
+
     return json;
   }
 
-  factory ClientsPaginationQuery.fowardPage(ClientsPaginationQuery query) {
-    return ClientsPaginationQuery(
-      page: query.page != null ? query.page! + 1 : null,
-      size: query.size,
-      order: query.order,
-      cnpj: query.cnpj,
-      corporateReason: query.corporateReason,
-      presentationName: query.presentationName,
-      tags: query.tags,
-    );
+  cleanFilters() {
+    cnpj = null;
+    corporateReason = null;
+    presentationName = null;
+    tags = null;
+    status = null;
+    conectaPlus = null;
   }
 
-  factory ClientsPaginationQuery.backPage(ClientsPaginationQuery query) {
-    return ClientsPaginationQuery(
-      page: query.page != null ? query.page! - 1 : null,
-      size: query.size,
-      order: query.order,
-      cnpj: query.cnpj,
-      corporateReason: query.corporateReason,
-      presentationName: query.presentationName,
-      tags: query.tags,
-    );
+  fowardPage() {
+    page = page != null ? page! + 1 : null;
+    size = size;
+    order = order;
+    cnpj = cnpj;
+    corporateReason = corporateReason;
+    presentationName = presentationName;
+    tags = tags;
+  }
+
+  backPage() {
+    page = page != null ? page! - 1 : null;
+    size = size;
+    order = order;
+    cnpj = cnpj;
+    corporateReason = corporateReason;
+    presentationName = presentationName;
+    tags = tags;
   }
 }

@@ -95,9 +95,8 @@ class DioApiInteceptorImpl implements ApiInterceptor<Interceptor> {
               'A requisição não foi entendida. '
                   'Verifique os dados e tente novamente.',
         401 =>
-          message ??
-              'Você não tem permissão para acessar este recurso. '
-                  'Por favor, verifique suas credenciais.',
+          'Você não tem permissão para acessar este recurso. '
+              'Por favor, verifique suas credenciais.',
         403 =>
           message ??
               'Você não tem acesso a esta área. '

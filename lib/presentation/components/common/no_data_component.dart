@@ -13,7 +13,10 @@ class NoDataComponent extends StatelessWidget {
         children: [
           Icon(LucideIcons.archive100, size: 36),
           SizedBox(height: size.height * .03),
-          Text('Nenhum dado para mostrar'),
+          Text(
+            'Nenhum dado para mostrar',
+            style: ShadTheme.of(context).textTheme.h4,
+          ),
           Text(message),
         ],
       ),

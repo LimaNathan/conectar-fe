@@ -16,7 +16,10 @@ class RemoteAuthRepository implements AuthRepository {
   @override
   Future<Result<String>> register(CreateUserDTO user) async {
     try {
-      await _api.post(Endpoints.register, data: user.toJson());
+      await _api.post(
+        Endpoints.register,
+        data: user.toJson().remove('runtimeType'),
+      );
       return Ok('Usuário criado com sucesso!');
     } on DioException catch (e) {
       return Error(e.message ?? 'Houve um erro inesperado');

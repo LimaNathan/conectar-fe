@@ -11,7 +11,7 @@ CreateClientDTO _$CreateClientDTOFromJson(Map<String, dynamic> json) =>
       presentationName: json['presentationName'] as String,
       CNPJ: json['CNPJ'] as String,
       corporateReason: json['corporateReason'] as String,
-      address: AddressDTO.fromJson(json['address'] as Map<String, dynamic>),
+      address: json['address'] as Map<String, dynamic>,
       conectaPlus: json['conectaPlus'] as bool,
       tags: (json['tags'] as List<dynamic>).map((e) => e as String).toList(),
       $type: json['runtimeType'] as String?,
@@ -33,9 +33,7 @@ UpdateClientDTO _$UpdateClientDTOFromJson(Map<String, dynamic> json) =>
       presentationName: json['presentationName'] as String?,
       CNPJ: json['CNPJ'] as String?,
       corporateReason: json['corporateReason'] as String?,
-      address: json['address'] == null
-          ? null
-          : AddressDTO.fromJson(json['address'] as Map<String, dynamic>),
+      address: json['address'] as Map<String, dynamic>?,
       conectaPlus: json['conectaPlus'] as bool?,
       tags: (json['tags'] as List<dynamic>?)?.map((e) => e as String).toList(),
       $type: json['runtimeType'] as String?,

@@ -42,7 +42,7 @@ ClientDTO _$ClientDTOFromJson(
 /// @nodoc
 mixin _$ClientDTO {
 
- String? get presentationName; String? get CNPJ; String? get corporateReason; AddressDTO? get address; bool? get conectaPlus; List<String>? get tags;
+ String? get presentationName; String? get CNPJ; String? get corporateReason; Object? get address; bool? get conectaPlus; List<String>? get tags;
 /// Create a copy of ClientDTO
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -55,12 +55,12 @@ $ClientDTOCopyWith<ClientDTO> get copyWith => _$ClientDTOCopyWithImpl<ClientDTO>
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is ClientDTO&&(identical(other.presentationName, presentationName) || other.presentationName == presentationName)&&(identical(other.CNPJ, CNPJ) || other.CNPJ == CNPJ)&&(identical(other.corporateReason, corporateReason) || other.corporateReason == corporateReason)&&(identical(other.address, address) || other.address == address)&&(identical(other.conectaPlus, conectaPlus) || other.conectaPlus == conectaPlus)&&const DeepCollectionEquality().equals(other.tags, tags));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ClientDTO&&(identical(other.presentationName, presentationName) || other.presentationName == presentationName)&&(identical(other.CNPJ, CNPJ) || other.CNPJ == CNPJ)&&(identical(other.corporateReason, corporateReason) || other.corporateReason == corporateReason)&&const DeepCollectionEquality().equals(other.address, address)&&(identical(other.conectaPlus, conectaPlus) || other.conectaPlus == conectaPlus)&&const DeepCollectionEquality().equals(other.tags, tags));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,presentationName,CNPJ,corporateReason,address,conectaPlus,const DeepCollectionEquality().hash(tags));
+int get hashCode => Object.hash(runtimeType,presentationName,CNPJ,corporateReason,const DeepCollectionEquality().hash(address),conectaPlus,const DeepCollectionEquality().hash(tags));
 
 @override
 String toString() {
@@ -75,11 +75,11 @@ abstract mixin class $ClientDTOCopyWith<$Res>  {
   factory $ClientDTOCopyWith(ClientDTO value, $Res Function(ClientDTO) _then) = _$ClientDTOCopyWithImpl;
 @useResult
 $Res call({
- String presentationName, String CNPJ, String corporateReason, AddressDTO address, bool conectaPlus, List<String> tags
+ String presentationName, String CNPJ, String corporateReason, bool conectaPlus, List<String> tags
 });
 
 
-$AddressDTOCopyWith<$Res>? get address;
+
 
 }
 /// @nodoc
@@ -92,30 +92,17 @@ class _$ClientDTOCopyWithImpl<$Res>
 
 /// Create a copy of ClientDTO
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? presentationName = null,Object? CNPJ = null,Object? corporateReason = null,Object? address = null,Object? conectaPlus = null,Object? tags = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? presentationName = null,Object? CNPJ = null,Object? corporateReason = null,Object? conectaPlus = null,Object? tags = null,}) {
   return _then(_self.copyWith(
 presentationName: null == presentationName ? _self.presentationName! : presentationName // ignore: cast_nullable_to_non_nullable
 as String,CNPJ: null == CNPJ ? _self.CNPJ! : CNPJ // ignore: cast_nullable_to_non_nullable
 as String,corporateReason: null == corporateReason ? _self.corporateReason! : corporateReason // ignore: cast_nullable_to_non_nullable
-as String,address: null == address ? _self.address! : address // ignore: cast_nullable_to_non_nullable
-as AddressDTO,conectaPlus: null == conectaPlus ? _self.conectaPlus! : conectaPlus // ignore: cast_nullable_to_non_nullable
+as String,conectaPlus: null == conectaPlus ? _self.conectaPlus! : conectaPlus // ignore: cast_nullable_to_non_nullable
 as bool,tags: null == tags ? _self.tags! : tags // ignore: cast_nullable_to_non_nullable
 as List<String>,
   ));
 }
-/// Create a copy of ClientDTO
-/// with the given fields replaced by the non-null parameter values.
-@override
-@pragma('vm:prefer-inline')
-$AddressDTOCopyWith<$Res>? get address {
-    if (_self.address == null) {
-    return null;
-  }
 
-  return $AddressDTOCopyWith<$Res>(_self.address!, (value) {
-    return _then(_self.copyWith(address: value));
-  });
-}
 }
 
 
@@ -203,7 +190,7 @@ return paginated(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String presentationName,  String CNPJ,  String corporateReason,  AddressDTO address,  bool conectaPlus,  List<String> tags)?  $default,{TResult Function( String? presentationName,  String? CNPJ,  String? corporateReason,  AddressDTO? address,  bool? conectaPlus,  List<String>? tags)?  update,TResult Function( int? id,  String? presentationName,  String? corporateReason,  String? CNPJ,  bool? public,  String? clientStatus,  bool? conectaPlus,  List<String>? tags,  AddressDTO? address)?  paginated,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String presentationName,  String CNPJ,  String corporateReason,  Map<String, dynamic> address,  bool conectaPlus,  List<String> tags)?  $default,{TResult Function( String? presentationName,  String? CNPJ,  String? corporateReason,  Map<String, dynamic>? address,  bool? conectaPlus,  List<String>? tags)?  update,TResult Function( int? id,  String? presentationName,  String? corporateReason,  String? CNPJ,  bool? public,  String? clientStatus,  bool? conectaPlus,  List<String>? tags,  AddressDTO? address)?  paginated,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case CreateClientDTO() when $default != null:
 return $default(_that.presentationName,_that.CNPJ,_that.corporateReason,_that.address,_that.conectaPlus,_that.tags);case UpdateClientDTO() when update != null:
@@ -226,7 +213,7 @@ return paginated(_that.id,_that.presentationName,_that.corporateReason,_that.CNP
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String presentationName,  String CNPJ,  String corporateReason,  AddressDTO address,  bool conectaPlus,  List<String> tags)  $default,{required TResult Function( String? presentationName,  String? CNPJ,  String? corporateReason,  AddressDTO? address,  bool? conectaPlus,  List<String>? tags)  update,required TResult Function( int? id,  String? presentationName,  String? corporateReason,  String? CNPJ,  bool? public,  String? clientStatus,  bool? conectaPlus,  List<String>? tags,  AddressDTO? address)  paginated,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String presentationName,  String CNPJ,  String corporateReason,  Map<String, dynamic> address,  bool conectaPlus,  List<String> tags)  $default,{required TResult Function( String? presentationName,  String? CNPJ,  String? corporateReason,  Map<String, dynamic>? address,  bool? conectaPlus,  List<String>? tags)  update,required TResult Function( int? id,  String? presentationName,  String? corporateReason,  String? CNPJ,  bool? public,  String? clientStatus,  bool? conectaPlus,  List<String>? tags,  AddressDTO? address)  paginated,}) {final _that = this;
 switch (_that) {
 case CreateClientDTO():
 return $default(_that.presentationName,_that.CNPJ,_that.corporateReason,_that.address,_that.conectaPlus,_that.tags);case UpdateClientDTO():
@@ -248,7 +235,7 @@ return paginated(_that.id,_that.presentationName,_that.corporateReason,_that.CNP
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String presentationName,  String CNPJ,  String corporateReason,  AddressDTO address,  bool conectaPlus,  List<String> tags)?  $default,{TResult? Function( String? presentationName,  String? CNPJ,  String? corporateReason,  AddressDTO? address,  bool? conectaPlus,  List<String>? tags)?  update,TResult? Function( int? id,  String? presentationName,  String? corporateReason,  String? CNPJ,  bool? public,  String? clientStatus,  bool? conectaPlus,  List<String>? tags,  AddressDTO? address)?  paginated,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String presentationName,  String CNPJ,  String corporateReason,  Map<String, dynamic> address,  bool conectaPlus,  List<String> tags)?  $default,{TResult? Function( String? presentationName,  String? CNPJ,  String? corporateReason,  Map<String, dynamic>? address,  bool? conectaPlus,  List<String>? tags)?  update,TResult? Function( int? id,  String? presentationName,  String? corporateReason,  String? CNPJ,  bool? public,  String? clientStatus,  bool? conectaPlus,  List<String>? tags,  AddressDTO? address)?  paginated,}) {final _that = this;
 switch (_that) {
 case CreateClientDTO() when $default != null:
 return $default(_that.presentationName,_that.CNPJ,_that.corporateReason,_that.address,_that.conectaPlus,_that.tags);case UpdateClientDTO() when update != null:
@@ -265,13 +252,19 @@ return paginated(_that.id,_that.presentationName,_that.corporateReason,_that.CNP
 @JsonSerializable()
 
 class CreateClientDTO implements ClientDTO {
-  const CreateClientDTO({required this.presentationName, required this.CNPJ, required this.corporateReason, required this.address, required this.conectaPlus, required final  List<String> tags, final  String? $type}): _tags = tags,$type = $type ?? 'default';
+  const CreateClientDTO({required this.presentationName, required this.CNPJ, required this.corporateReason, required final  Map<String, dynamic> address, required this.conectaPlus, required final  List<String> tags, final  String? $type}): _address = address,_tags = tags,$type = $type ?? 'default';
   factory CreateClientDTO.fromJson(Map<String, dynamic> json) => _$CreateClientDTOFromJson(json);
 
 @override final  String presentationName;
 @override final  String CNPJ;
 @override final  String corporateReason;
-@override final  AddressDTO address;
+ final  Map<String, dynamic> _address;
+@override Map<String, dynamic> get address {
+  if (_address is EqualUnmodifiableMapView) return _address;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableMapView(_address);
+}
+
 @override final  bool conectaPlus;
  final  List<String> _tags;
 @override List<String> get tags {
@@ -298,12 +291,12 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is CreateClientDTO&&(identical(other.presentationName, presentationName) || other.presentationName == presentationName)&&(identical(other.CNPJ, CNPJ) || other.CNPJ == CNPJ)&&(identical(other.corporateReason, corporateReason) || other.corporateReason == corporateReason)&&(identical(other.address, address) || other.address == address)&&(identical(other.conectaPlus, conectaPlus) || other.conectaPlus == conectaPlus)&&const DeepCollectionEquality().equals(other._tags, _tags));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is CreateClientDTO&&(identical(other.presentationName, presentationName) || other.presentationName == presentationName)&&(identical(other.CNPJ, CNPJ) || other.CNPJ == CNPJ)&&(identical(other.corporateReason, corporateReason) || other.corporateReason == corporateReason)&&const DeepCollectionEquality().equals(other._address, _address)&&(identical(other.conectaPlus, conectaPlus) || other.conectaPlus == conectaPlus)&&const DeepCollectionEquality().equals(other._tags, _tags));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,presentationName,CNPJ,corporateReason,address,conectaPlus,const DeepCollectionEquality().hash(_tags));
+int get hashCode => Object.hash(runtimeType,presentationName,CNPJ,corporateReason,const DeepCollectionEquality().hash(_address),conectaPlus,const DeepCollectionEquality().hash(_tags));
 
 @override
 String toString() {
@@ -318,11 +311,11 @@ abstract mixin class $CreateClientDTOCopyWith<$Res> implements $ClientDTOCopyWit
   factory $CreateClientDTOCopyWith(CreateClientDTO value, $Res Function(CreateClientDTO) _then) = _$CreateClientDTOCopyWithImpl;
 @override @useResult
 $Res call({
- String presentationName, String CNPJ, String corporateReason, AddressDTO address, bool conectaPlus, List<String> tags
+ String presentationName, String CNPJ, String corporateReason, Map<String, dynamic> address, bool conectaPlus, List<String> tags
 });
 
 
-@override $AddressDTOCopyWith<$Res> get address;
+
 
 }
 /// @nodoc
@@ -340,36 +333,35 @@ class _$CreateClientDTOCopyWithImpl<$Res>
 presentationName: null == presentationName ? _self.presentationName : presentationName // ignore: cast_nullable_to_non_nullable
 as String,CNPJ: null == CNPJ ? _self.CNPJ : CNPJ // ignore: cast_nullable_to_non_nullable
 as String,corporateReason: null == corporateReason ? _self.corporateReason : corporateReason // ignore: cast_nullable_to_non_nullable
-as String,address: null == address ? _self.address : address // ignore: cast_nullable_to_non_nullable
-as AddressDTO,conectaPlus: null == conectaPlus ? _self.conectaPlus : conectaPlus // ignore: cast_nullable_to_non_nullable
+as String,address: null == address ? _self._address : address // ignore: cast_nullable_to_non_nullable
+as Map<String, dynamic>,conectaPlus: null == conectaPlus ? _self.conectaPlus : conectaPlus // ignore: cast_nullable_to_non_nullable
 as bool,tags: null == tags ? _self._tags : tags // ignore: cast_nullable_to_non_nullable
 as List<String>,
   ));
 }
 
-/// Create a copy of ClientDTO
-/// with the given fields replaced by the non-null parameter values.
-@override
-@pragma('vm:prefer-inline')
-$AddressDTOCopyWith<$Res> get address {
-  
-  return $AddressDTOCopyWith<$Res>(_self.address, (value) {
-    return _then(_self.copyWith(address: value));
-  });
-}
+
 }
 
 /// @nodoc
 @JsonSerializable()
 
 class UpdateClientDTO implements ClientDTO {
-  const UpdateClientDTO({this.presentationName, this.CNPJ, this.corporateReason, this.address, this.conectaPlus, final  List<String>? tags, final  String? $type}): _tags = tags,$type = $type ?? 'update';
+  const UpdateClientDTO({this.presentationName, this.CNPJ, this.corporateReason, final  Map<String, dynamic>? address, this.conectaPlus, final  List<String>? tags, final  String? $type}): _address = address,_tags = tags,$type = $type ?? 'update';
   factory UpdateClientDTO.fromJson(Map<String, dynamic> json) => _$UpdateClientDTOFromJson(json);
 
 @override final  String? presentationName;
 @override final  String? CNPJ;
 @override final  String? corporateReason;
-@override final  AddressDTO? address;
+ final  Map<String, dynamic>? _address;
+@override Map<String, dynamic>? get address {
+  final value = _address;
+  if (value == null) return null;
+  if (_address is EqualUnmodifiableMapView) return _address;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableMapView(value);
+}
+
 @override final  bool? conectaPlus;
  final  List<String>? _tags;
 @override List<String>? get tags {
@@ -398,12 +390,12 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is UpdateClientDTO&&(identical(other.presentationName, presentationName) || other.presentationName == presentationName)&&(identical(other.CNPJ, CNPJ) || other.CNPJ == CNPJ)&&(identical(other.corporateReason, corporateReason) || other.corporateReason == corporateReason)&&(identical(other.address, address) || other.address == address)&&(identical(other.conectaPlus, conectaPlus) || other.conectaPlus == conectaPlus)&&const DeepCollectionEquality().equals(other._tags, _tags));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is UpdateClientDTO&&(identical(other.presentationName, presentationName) || other.presentationName == presentationName)&&(identical(other.CNPJ, CNPJ) || other.CNPJ == CNPJ)&&(identical(other.corporateReason, corporateReason) || other.corporateReason == corporateReason)&&const DeepCollectionEquality().equals(other._address, _address)&&(identical(other.conectaPlus, conectaPlus) || other.conectaPlus == conectaPlus)&&const DeepCollectionEquality().equals(other._tags, _tags));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,presentationName,CNPJ,corporateReason,address,conectaPlus,const DeepCollectionEquality().hash(_tags));
+int get hashCode => Object.hash(runtimeType,presentationName,CNPJ,corporateReason,const DeepCollectionEquality().hash(_address),conectaPlus,const DeepCollectionEquality().hash(_tags));
 
 @override
 String toString() {
@@ -418,11 +410,11 @@ abstract mixin class $UpdateClientDTOCopyWith<$Res> implements $ClientDTOCopyWit
   factory $UpdateClientDTOCopyWith(UpdateClientDTO value, $Res Function(UpdateClientDTO) _then) = _$UpdateClientDTOCopyWithImpl;
 @override @useResult
 $Res call({
- String? presentationName, String? CNPJ, String? corporateReason, AddressDTO? address, bool? conectaPlus, List<String>? tags
+ String? presentationName, String? CNPJ, String? corporateReason, Map<String, dynamic>? address, bool? conectaPlus, List<String>? tags
 });
 
 
-@override $AddressDTOCopyWith<$Res>? get address;
+
 
 }
 /// @nodoc
@@ -440,26 +432,14 @@ class _$UpdateClientDTOCopyWithImpl<$Res>
 presentationName: freezed == presentationName ? _self.presentationName : presentationName // ignore: cast_nullable_to_non_nullable
 as String?,CNPJ: freezed == CNPJ ? _self.CNPJ : CNPJ // ignore: cast_nullable_to_non_nullable
 as String?,corporateReason: freezed == corporateReason ? _self.corporateReason : corporateReason // ignore: cast_nullable_to_non_nullable
-as String?,address: freezed == address ? _self.address : address // ignore: cast_nullable_to_non_nullable
-as AddressDTO?,conectaPlus: freezed == conectaPlus ? _self.conectaPlus : conectaPlus // ignore: cast_nullable_to_non_nullable
+as String?,address: freezed == address ? _self._address : address // ignore: cast_nullable_to_non_nullable
+as Map<String, dynamic>?,conectaPlus: freezed == conectaPlus ? _self.conectaPlus : conectaPlus // ignore: cast_nullable_to_non_nullable
 as bool?,tags: freezed == tags ? _self._tags : tags // ignore: cast_nullable_to_non_nullable
 as List<String>?,
   ));
 }
 
-/// Create a copy of ClientDTO
-/// with the given fields replaced by the non-null parameter values.
-@override
-@pragma('vm:prefer-inline')
-$AddressDTOCopyWith<$Res>? get address {
-    if (_self.address == null) {
-    return null;
-  }
 
-  return $AddressDTOCopyWith<$Res>(_self.address!, (value) {
-    return _then(_self.copyWith(address: value));
-  });
-}
 }
 
 /// @nodoc
@@ -528,7 +508,7 @@ $Res call({
 });
 
 
-@override $AddressDTOCopyWith<$Res>? get address;
+$AddressDTOCopyWith<$Res>? get address;
 
 }
 /// @nodoc
@@ -776,7 +756,7 @@ return $default(_that.street,_that.number,_that.complement,_that.district,_that.
 @JsonSerializable()
 
 class _AddressDTO implements AddressDTO {
-  const _AddressDTO({required this.street, required this.number, this.complement, required this.district, required this.city, required this.state, required this.zipCode, required this.country});
+   _AddressDTO({required this.street, required this.number, this.complement, required this.district, required this.city, required this.state, required this.zipCode, required this.country});
   factory _AddressDTO.fromJson(Map<String, dynamic> json) => _$AddressDTOFromJson(json);
 
 @override final  String street;

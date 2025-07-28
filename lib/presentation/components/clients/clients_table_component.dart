@@ -1,6 +1,6 @@
 import 'package:conectar_users_fe/common/commands/command_pattern.dart';
-import 'package:conectar_users_fe/models/clients/dto/clients_pagination_query.dart';
 import 'package:conectar_users_fe/models/clients/pagination_result.dart';
+import 'package:conectar_users_fe/presentation/components/clients/clients_dialog_component.dart';
 import 'package:conectar_users_fe/presentation/components/common/error_component.dart';
 import 'package:conectar_users_fe/presentation/components/common/no_data_component.dart';
 import 'package:conectar_users_fe/presentation/components/common/pagination_builder.dart';
@@ -19,16 +19,11 @@ class ClientsTable extends StatefulWidget {
 class _ClientsTableState extends State<ClientsTable> {
   late final ClientViewmodel clientViewmodel;
 
-  ClientsPaginationQuery query = ClientsPaginationQuery(
-    page: 1,
-    size: 10,
-    order: OrderDirection.desc,
-  );
-
   @override
   void initState() {
     super.initState();
     clientViewmodel = context.read<ClientViewmodel>();
+    clientViewmodel.getAllCommand.call();
   }
 
   @override
@@ -61,7 +56,7 @@ class _ClientsTableState extends State<ClientsTable> {
             ShadToaster.of(context).show(
               ShadToast(
                 backgroundColor: colorScheme.accent,
-                title: Text('Ops, algo deu errado...'),
+                title: Text('Atenção...'),
                 description: Text(message),
               ),
             );
@@ -72,9 +67,10 @@ class _ClientsTableState extends State<ClientsTable> {
               showWarnSnackBar('Você já está na primeira página...');
               return;
             } else {
+              clientViewmodel.query.backPage();
               clientViewmodel //
                   .getAllCommand
-                  .call((ClientsPaginationQuery.backPage(query)));
+                  .call();
             }
           }
 
@@ -83,9 +79,10 @@ class _ClientsTableState extends State<ClientsTable> {
               showWarnSnackBar('Parece que você já está na última página...');
               return;
             } else {
+              clientViewmodel.query.fowardPage();
               clientViewmodel //
                   .getAllCommand
-                  .call((ClientsPaginationQuery.fowardPage(query)));
+                  .call();
             }
           }
 
@@ -93,129 +90,161 @@ class _ClientsTableState extends State<ClientsTable> {
               (clientViewmodel.getAllCommand.result
                       as Ok<ClientPaginationResult>)
                   .value;
-          return ConstrainedBox(
-            constraints: BoxConstraints(
-              maxHeight: size.height,
-              minHeight: size.height * .6,
-              minWidth: size.width,
-            ),
 
-            child: ShadTable.list(
-              verticalScrollPhysics: NeverScrollableScrollPhysics(),
-              columnSpanExtent: (column) {
-                if (column == 0) {
-                  return FixedSpanExtent(size.width * .25);
-                }
-                if (column == 1) {
-                  return FixedSpanExtent(size.width * .1);
-                }
+          if (resultValue.data.isEmpty) {
+            showWarnSnackBar(
+              'Não foram encontrados dados, faça a consulta com filtros ou cadastre um novo cliente',
+            );
+          }
+          return resultValue.data.isEmpty
+              ? NoDataComponent(
+                  message:
+                      'Não foram encontrados dados, faça a consulta com filtros ou cadastre um novo cliente',
+                )
+              : ConstrainedBox(
+                  constraints: BoxConstraints(
+                    maxHeight: size.height,
+                    minHeight: size.height * .6,
+                    minWidth: size.width,
+                  ),
 
-                return FixedSpanExtent(size.width * .15);
-              },
+                  child: ShadTable.list(
+                    verticalScrollPhysics: NeverScrollableScrollPhysics(),
+                    columnSpanExtent: (column) {
+                      if (column == 0) {
+                        return FixedSpanExtent(size.width * .25);
+                      }
+                      if (column == 1) {
+                        return FixedSpanExtent(size.width * .1);
+                      }
 
-              rowSpanBackgroundDecoration: (row) {
-                if (row == 0) {
-                  return TableSpanDecoration(color: colorScheme.accent);
-                }
-                return null;
-              },
-              header: [
-                ShadTableCell.header(
-                  child: Text('Razão social', style: columnHeaderTextTheme),
-                ),
-                ShadTableCell.header(
-                  child: Text('CNPJ', style: columnHeaderTextTheme),
-                ),
-                ShadTableCell.header(
-                  child: Text('Nome de fachada', style: columnHeaderTextTheme),
-                ),
-                ShadTableCell.header(
-                  child: Text('Tags', style: columnHeaderTextTheme),
-                ),
-                ShadTableCell.header(
-                  child: Text('Status', style: columnHeaderTextTheme),
-                ),
-                ShadTableCell.header(
-                  child: Text('Conecta+', style: columnHeaderTextTheme),
-                ),
-              ],
+                      return FixedSpanExtent(size.width * .15);
+                    },
 
-              children: [
-                ...resultValue.data.map(
-                  (element) => [
-                    ShadTableCell(
-                      child: Text(element.corporateReason ?? 'Não informado'),
-                    ),
-                    ShadTableCell(child: Text(element.CNPJ ?? 'Não informado')),
-                    ShadTableCell(
-                      child: Text(element.presentationName ?? 'Não informado'),
-                    ),
-                    ShadTableCell(
-                      child: Text(
-                        element.tags
-                                ?.map((e) => e)
-                                .toString()
-                                .replaceAll('()', '') ??
-                            '',
-                      ),
-                    ),
-                    ShadTableCell(
-                      child: Text(element.clientStatus ?? 'Não informado'),
-                    ),
-                    ShadTableCell(
-                      child: Text(
-                        element.conectaPlus != null && element.conectaPlus!
-                            ? 'Sim'
-                            : 'Não',
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-              footer: [
-                ShadTableCell.footer(
-                  child: Text('Total: ${resultValue.meta.total}'),
-                ),
-                ShadTableCell.footer(child: Text('')),
-                ShadTableCell.footer(child: Text('')),
-                ShadTableCell.footer(child: Text('')),
-                ShadTableCell.footer(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      ShadButton.ghost(
-                        onPressed: () =>
-                            onPressedBack(int.parse(resultValue.meta.page)),
-                        child: Icon(LucideIcons.arrowLeft300),
-                      ),
-                      PaginationBuilder(
-                        totalPages: resultValue.meta.lastPage,
-                        currentPage: int.parse(resultValue.meta.page),
-                        onTap: (index) {
-                          clientViewmodel //
-                              .getAllCommand
-                              .call(
-                                (ClientsPaginationQuery.backPage(
-                                  query..page = index,
-                                )),
-                              );
-                        },
-                      ),
-
-                      ShadButton.ghost(
-                        onPressed: () => onPressedFoward(
-                          int.parse(resultValue.meta.page),
-                          resultValue.meta.lastPage,
+                    rowSpanBackgroundDecoration: (row) {
+                      if (row == 0) {
+                        return TableSpanDecoration(color: colorScheme.accent);
+                      }
+                      return null;
+                    },
+                    header: [
+                      ShadTableCell.header(
+                        child: Text(
+                          'Razão social',
+                          style: columnHeaderTextTheme,
                         ),
-                        child: Icon(LucideIcons.arrowRight300),
+                      ),
+                      ShadTableCell.header(
+                        child: Text('CNPJ', style: columnHeaderTextTheme),
+                      ),
+                      ShadTableCell.header(
+                        child: Text(
+                          'Nome de fachada',
+                          style: columnHeaderTextTheme,
+                        ),
+                      ),
+                      ShadTableCell.header(
+                        child: Text('Tags', style: columnHeaderTextTheme),
+                      ),
+                      ShadTableCell.header(
+                        child: Text('Status', style: columnHeaderTextTheme),
+                      ),
+                      ShadTableCell.header(
+                        child: Text('Conecta+', style: columnHeaderTextTheme),
                       ),
                     ],
+
+                    onRowTap: (row) {
+                      showShadDialog(
+                        context: context,
+                        builder: (context) =>
+                            ClientDialog(client: resultValue.data[row - 1]),
+                      );
+                    },
+                    children: [
+                      ...resultValue.data.map(
+                        (element) => [
+                          ShadTableCell(
+                            child: Text(
+                              element.corporateReason ?? 'Não informado',
+                            ),
+                          ),
+                          ShadTableCell(
+                            child: Text(element.CNPJ ?? 'Não informado'),
+                          ),
+                          ShadTableCell(
+                            child: Text(
+                              element.presentationName ?? 'Não informado',
+                            ),
+                          ),
+                          ShadTableCell(
+                            child: Text(
+                              element.tags
+                                      ?.map((e) => e)
+                                      .toString()
+                                      .replaceAll('()', '') ??
+                                  '',
+                            ),
+                          ),
+                          ShadTableCell(
+                            child: Text(
+                              element.clientStatus ?? 'Não informado',
+                            ),
+                          ),
+                          ShadTableCell(
+                            child: Text(
+                              element.conectaPlus != null &&
+                                      element.conectaPlus! == true
+                                  ? 'Sim'
+                                  : 'Não',
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                    footer: [
+                      ShadTableCell.footer(
+                        child: Text('Total: ${resultValue.meta.total}'),
+                      ),
+                      ShadTableCell.footer(child: Text('')),
+                      ShadTableCell.footer(child: Text('')),
+                      ShadTableCell.footer(child: Text('')),
+                      ShadTableCell.footer(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            ShadButton.ghost(
+                              onPressed: () => onPressedBack(
+                                int.parse(resultValue.meta.page),
+                              ),
+                              child: Icon(LucideIcons.arrowLeft300),
+                            ),
+                            PaginationBuilder(
+                              totalPages: resultValue.meta.lastPage,
+                              currentPage: int.parse(resultValue.meta.page),
+                              onTap: (index) {
+                                clientViewmodel.query.page = index;
+
+                                clientViewmodel //
+                                    .getAllCommand
+                                    .call();
+                              },
+                            ),
+
+                            ShadButton.ghost(
+                              onPressed: () => onPressedFoward(
+                                int.parse(resultValue.meta.page),
+                                resultValue.meta.lastPage,
+                              ),
+                              child: Icon(LucideIcons.arrowRight300),
+                            ),
+                          ],
+                        ),
+                      ),
+                      ShadTableCell.footer(child: Text('')),
+                    ],
                   ),
-                ),
-                ShadTableCell.footer(child: Text('')),
-              ],
-            ),
-          );
+                );
         }
 
         return NoDataComponent(message: 'Nenhum dado para mostrar por aqui.');

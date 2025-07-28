@@ -1,20 +1,27 @@
 class Endpoints {
   Endpoints._();
+  static const String _baseUrl = String.fromEnvironment('BASE_URL');
+
   // Auth
-  static const String register = 'auth/register';
-  static const String login = 'auth/login';
+  static const String register = '$_baseUrl/auth/register';
+  static const String login = '$_baseUrl/auth/login';
 
   // User
-  static const String userPaginated = 'user/paginated';
-  static const String userPaginatedInactive = 'user/paginated/inactive';
-  static String updateUser(int id) => 'user/$id';
-  static const String deleteUser = 'user/'; // via query param ?id=
+  static const String userPaginated = '$_baseUrl/user/paginated';
+  static const String userPaginatedInactive =
+      '$_baseUrl/user/paginated/inactive';
+  static String updateUser(int id) => '$_baseUrl/user/$id';
+  static const String deleteUser = '$_baseUrl/user/'; // via query param ?id=
 
   // Clients
-  static const String createClient = 'clients';
+  static const String createClient = '$_baseUrl/clients';
   static const String addUserToClient =
-      'clients'; // via PUT com query param userId & clientId
-  static const String clientPaginated = 'clients/paginated';
-  static String updateClient(int id) => 'clients/$id';
-  static const String deleteClient = 'clients/'; // via query param ?id=
+      '$_baseUrl/clients'; // via PUT com query param userId & clientId
+  static const String clientPaginated = '$_baseUrl/clients/paginated';
+  static String updateClient = '$_baseUrl/clients';
+  static const String deleteClient =
+      '$_baseUrl/clients'; // via query param ?id=
+
+  static String findByZIPCode(String zip) =>
+      'https://viacep.com.br/ws/$zip/json/';
 }

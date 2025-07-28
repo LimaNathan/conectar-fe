@@ -6,12 +6,14 @@ part 'client_dto.freezed.dart';
 part 'client_dto.g.dart';
 
 @freezed
+// @JsonSerializable(ignoreUnannotated: true)
+
 abstract class ClientDTO with _$ClientDTO {
   const factory ClientDTO({
     required String presentationName,
     required String CNPJ,
     required String corporateReason,
-    required AddressDTO address,
+    required Map<String, dynamic> address,
     required bool conectaPlus,
     required List<String> tags,
   }) = CreateClientDTO;
@@ -20,7 +22,7 @@ abstract class ClientDTO with _$ClientDTO {
     String? presentationName,
     String? CNPJ,
     String? corporateReason,
-    AddressDTO? address,
+    Map<String, dynamic>? address,
     bool? conectaPlus,
     List<String>? tags,
   }) = UpdateClientDTO;
@@ -42,7 +44,7 @@ abstract class ClientDTO with _$ClientDTO {
 
 @freezed
 abstract class AddressDTO with _$AddressDTO {
-  const factory AddressDTO({
+  factory AddressDTO({
     required String street,
     required String number,
     String? complement,

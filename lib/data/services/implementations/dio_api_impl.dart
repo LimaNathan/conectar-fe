@@ -11,7 +11,7 @@ class DioApiImpl implements ApiInterface<Response?> {
   DioApiImpl(this._localStorage) {
     _dio.options = BaseOptions(
       headers: {..._dio.options.headers, 'Content-Type': 'application/json'},
-      baseUrl: _baseUrl,
+
       connectTimeout: 20.seconds,
     );
     _dio.interceptors.addAll([
@@ -29,7 +29,6 @@ class DioApiImpl implements ApiInterface<Response?> {
   }
 
   final _dio = Dio();
-  static const String _baseUrl = String.fromEnvironment('BASE_URL');
   final LocalStorageInterface _localStorage;
 
   Future _checkHeaders() async {
@@ -82,6 +81,7 @@ class DioApiImpl implements ApiInterface<Response?> {
     String url, {
     Object? data,
     Map<String, dynamic>? queryParms,
+    bool? withoutBaseURL,
   }) async {
     try {
       await _checkHeaders();

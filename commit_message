@@ -1,6 +1,24 @@
-refactor: Melhora a usabilidade da lista de clientes
+feat: Implementa CRUD de clientes e melhora a usabilidade
 
-Este commit introduz as seguintes melhorias na lista de clientes:
+Este commit introduz uma série de melhorias e novas funcionalidades, incluindo:
 
-- Adiciona um `SingleChildScrollView` para permitir a rolagem da tela quando o teclado está aberto.
-- Remove o arquivo `commit_message` do versionamento.
+- **CRUD de Clientes:**
+    - Adicionado um diálogo para criar, editar e excluir clientes.
+    - Implementada a busca de endereço por CEP utilizando a API do ViaCEP.
+    - A tabela de clientes agora é atualizada automaticamente após cada operação.
+
+- **Melhorias na Tabela de Clientes:**
+    - A tabela de clientes agora é mais robusta, com componentes para exibir erros e quando não há dados.
+    - Adicionado um diálogo de confirmação ao excluir um cliente.
+    - A paginação foi aprimorada para uma melhor experiência do usuário.
+
+- **Filtros Aprimorados:**
+    - A filtragem de clientes foi aprimorada com mais opções e uma função para limpar os filtros.
+
+- **Tratamento de Erros e Autenticação:**
+    - O interceptor da API agora lida com erros de autenticação, redirecionando o usuário para a tela de login quando necessário.
+
+- **Outras Melhorias:**
+    - O DTO do cliente foi atualizado para usar um mapa dinâmico para o endereço.
+    - O endpoint da API agora é configurado através de variáveis de ambiente.
+    - Adicionado um scroll automático para a tabela de clientes.

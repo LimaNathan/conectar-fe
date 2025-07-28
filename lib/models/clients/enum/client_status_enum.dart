@@ -1,7 +1,8 @@
 enum ClientStatusEnum {
-  inactive('Inativo'),
-  active('Ativo');
+  inactive('Inativo', false),
+  active('Ativo', true);
 
-  const ClientStatusEnum(this.label);
+  const ClientStatusEnum(this.label, this.value);
   final String label;
+  final bool value;
 }

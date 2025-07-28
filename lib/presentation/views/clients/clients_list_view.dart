@@ -1,10 +1,9 @@
 import 'package:conectar_users_fe/common/commands/command_pattern.dart';
-import 'package:conectar_users_fe/models/clients/dto/clients_pagination_query.dart';
+import 'package:conectar_users_fe/models/clients/dto/client_dto.dart';
+import 'package:conectar_users_fe/presentation/components/clients/clients_dialog_component.dart';
 import 'package:conectar_users_fe/presentation/components/clients/clients_filters_component.dart';
 import 'package:conectar_users_fe/presentation/components/clients/clients_table_component.dart';
-import 'package:conectar_users_fe/presentation/viewmodels/auth/login_viewmodel.dart';
 import 'package:conectar_users_fe/presentation/viewmodels/clients/client_viewmodel.dart';
-import 'package:dart_jsonwebtoken/dart_jsonwebtoken.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
@@ -18,29 +17,13 @@ class ClientsListView extends StatefulWidget {
 
 class _ClientsListViewState extends State<ClientsListView> {
   late final ClientViewmodel clientViewmodel;
-  late final LoginViewmodel loginViewmodel;
-  late final JWT? user;
 
   @override
   void initState() {
     super.initState();
     clientViewmodel = context.read<ClientViewmodel>();
-    loginViewmodel = context.read<LoginViewmodel>();
 
-    loginViewmodel.getUserDetailsCommand
-      ..call()
-      ..addListener(_userListener);
-    clientViewmodel.getAllCommand
-      ..call(
-        ClientsPaginationQuery(page: 1, size: 10, order: OrderDirection.desc),
-      )
-      ..addListener(_listener);
-  }
-
-  _userListener() {
-    if (loginViewmodel.getUserDetailsCommand.isSuccess) {
-      user = (loginViewmodel.getUserDetailsCommand.result as Ok<JWT>).value;
-    }
+    clientViewmodel.getAllCommand.addListener(_listener);
   }
 
   _listener() {
@@ -60,7 +43,7 @@ class _ClientsListViewState extends State<ClientsListView> {
   @override
   void dispose() {
     clientViewmodel.getAllCommand.removeListener(_listener);
-    loginViewmodel.getUserDetailsCommand.removeListener(_userListener);
+
     super.dispose();
   }
 
@@ -137,6 +120,11 @@ class _ClientsListViewState extends State<ClientsListView> {
                     decoration: ShadDecoration(
                       border: ShadBorder.all(color: Colors.black),
                     ),
+                    onPressed: () async =>
+                        await showShadDialog<CreateClientDTO>(
+                          context: context,
+                          builder: (context) => const ClientDialog(),
+                        ),
                     child: Text(
                       'Novo',
                       style: textTheme.p.copyWith(
