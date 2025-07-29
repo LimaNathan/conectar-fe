@@ -1,5 +1,7 @@
 import 'package:conectar_users_fe/common/commands/command_pattern.dart';
+import 'package:conectar_users_fe/common/utils/reponsivity_util.dart';
 import 'package:conectar_users_fe/models/clients/pagination_result.dart';
+import 'package:conectar_users_fe/models/utils/device_screen_type_enum.dart';
 import 'package:conectar_users_fe/presentation/components/clients/clients_dialog_component.dart';
 import 'package:conectar_users_fe/presentation/components/common/error_component.dart';
 import 'package:conectar_users_fe/presentation/components/common/no_data_component.dart';
@@ -18,6 +20,7 @@ class ClientsTable extends StatefulWidget {
 
 class _ClientsTableState extends State<ClientsTable> {
   late final ClientViewmodel clientViewmodel;
+  final responsivity = ResponsivityUtil();
 
   @override
   void initState() {
@@ -31,21 +34,17 @@ class _ClientsTableState extends State<ClientsTable> {
     final colorScheme = ShadTheme.of(context).colorScheme;
     final textTheme = ShadTheme.of(context).textTheme;
     final size = MediaQuery.sizeOf(context);
+    final deviceType = responsivity.getDeviceType(context);
+
     return ListenableBuilder(
       listenable: clientViewmodel.getAllCommand,
-
       builder: (context, _) {
         final columnHeaderTextTheme = textTheme.h4.copyWith(fontSize: 16);
 
         if (clientViewmodel.getAllCommand.hasError) {
           return ErrorComponent(
-            message:
-                (clientViewmodel //
-                            .getAllCommand
-                            .result
-                        as Error)
-                    .exception
-                    .toString(),
+            message: (clientViewmodel.getAllCommand.result as Error).exception
+                .toString(),
           );
         }
         if (clientViewmodel.getAllCommand.running) {
@@ -68,9 +67,7 @@ class _ClientsTableState extends State<ClientsTable> {
               return;
             } else {
               clientViewmodel.query.backPage();
-              clientViewmodel //
-                  .getAllCommand
-                  .call();
+              clientViewmodel.getAllCommand.call();
             }
           }
 
@@ -80,9 +77,7 @@ class _ClientsTableState extends State<ClientsTable> {
               return;
             } else {
               clientViewmodel.query.fowardPage();
-              clientViewmodel //
-                  .getAllCommand
-                  .call();
+              clientViewmodel.getAllCommand.call();
             }
           }
 
@@ -96,6 +91,27 @@ class _ClientsTableState extends State<ClientsTable> {
               'Não foram encontrados dados, faça a consulta com filtros ou cadastre um novo cliente',
             );
           }
+
+          if (deviceType == DeviceScreenType.mobile) {
+            return ListView.builder(
+              shrinkWrap: true,
+              itemCount: resultValue.data.length,
+              itemBuilder: (context, index) {
+                final client = resultValue.data[index];
+                return ShadCard(
+                  child: ListTile(
+                    title: Text(client.presentationName ?? 'Não informado'),
+                    subtitle: Text(client.corporateReason ?? 'Não informado'),
+                    onTap: () => showShadDialog(
+                      context: context,
+                      builder: (context) => ClientDialog(client: client),
+                    ),
+                  ),
+                );
+              },
+            );
+          }
+
           return resultValue.data.isEmpty
               ? NoDataComponent(
                   message:
@@ -107,7 +123,6 @@ class _ClientsTableState extends State<ClientsTable> {
                     minHeight: size.height * .6,
                     minWidth: size.width,
                   ),
-
                   child: ShadTable.list(
                     verticalScrollPhysics: NeverScrollableScrollPhysics(),
                     columnSpanExtent: (column) {
@@ -120,7 +135,6 @@ class _ClientsTableState extends State<ClientsTable> {
 
                       return FixedSpanExtent(size.width * .15);
                     },
-
                     rowSpanBackgroundDecoration: (row) {
                       if (row == 0) {
                         return TableSpanDecoration(color: colorScheme.accent);
@@ -153,7 +167,6 @@ class _ClientsTableState extends State<ClientsTable> {
                         child: Text('Conecta+', style: columnHeaderTextTheme),
                       ),
                     ],
-
                     onRowTap: (row) {
                       if (row == 0) return;
 
@@ -227,12 +240,9 @@ class _ClientsTableState extends State<ClientsTable> {
                               onTap: (index) {
                                 clientViewmodel.query.page = index;
 
-                                clientViewmodel //
-                                    .getAllCommand
-                                    .call();
+                                clientViewmodel.getAllCommand.call();
                               },
                             ),
-
                             ShadButton.ghost(
                               onPressed: () => onPressedFoward(
                                 int.parse(resultValue.meta.page),

@@ -1,3 +1,5 @@
+import 'package:conectar_users_fe/common/utils/reponsivity_util.dart';
+import 'package:conectar_users_fe/models/utils/device_screen_type_enum.dart';
 import 'package:conectar_users_fe/presentation/viewmodels/clients/client_viewmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -81,6 +83,7 @@ class _ClientsViewState extends State<ClientsView> {
     final size = MediaQuery.sizeOf(context);
     final colorScheme = ShadTheme.of(context).colorScheme;
     final textTheme = ShadTheme.of(context).textTheme;
+    final deviceType = ResponsivityUtil().getDeviceType(context);
     return ListView(
       controller: scrollController,
       children: [
@@ -95,19 +98,26 @@ class _ClientsViewState extends State<ClientsView> {
                   decoration: _selectedIndex == 0
                       ? BoxDecoration(
                           border: Border(
-                            bottom: BorderSide(width: 3, color: Colors.black),
+                            bottom: BorderSide(
+                              width: 3,
+                              color: deviceType == DeviceScreenType.mobile
+                                  ? colorScheme.primary
+                                  : Colors.black,
+                            ),
                           ),
                         )
                       : null,
                   child: ShadButton.ghost(
                     onPressed: () => _onItemTapped(0),
-                    hoverBackgroundColor: colorScheme.primaryForeground,
+                    hoverBackgroundColor: colorScheme.accent.withAlpha(155),
                     child: Text(
                       'Dados Básicos',
-                      style: textTheme.p.copyWith(
-                        color: Colors.black,
-                        fontWeight: FontWeight.bold,
-                      ),
+                      style: deviceType == DeviceScreenType.mobile
+                          ? null
+                          : textTheme.p.copyWith(
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold,
+                            ),
                     ),
                   ),
                 ),

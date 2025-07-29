@@ -1,5 +1,7 @@
 import 'package:conectar_users_fe/common/commands/command_pattern.dart';
+import 'package:conectar_users_fe/common/utils/reponsivity_util.dart';
 import 'package:conectar_users_fe/models/auth/user_details.dart';
+import 'package:conectar_users_fe/models/utils/device_screen_type_enum.dart';
 import 'package:conectar_users_fe/presentation/viewmodels/user/user_viewmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -19,6 +21,7 @@ class _UsersViewState extends State<UsersView> {
   late final ScrollController scrollController;
   late final UserViewmodel userViewmodel;
   bool isAdmin = false;
+  final responsivity = ResponsivityUtil();
 
   @override
   void initState() {
@@ -121,6 +124,7 @@ class _UsersViewState extends State<UsersView> {
     final size = MediaQuery.sizeOf(context);
     final colorScheme = ShadTheme.of(context).colorScheme;
     final textTheme = ShadTheme.of(context).textTheme;
+    final deviceType = ResponsivityUtil().getDeviceType(context);
     return ListenableBuilder(
       listenable: userViewmodel.getUserDetailsCommand,
       builder: (context, child) {
@@ -140,20 +144,24 @@ class _UsersViewState extends State<UsersView> {
                               border: Border(
                                 bottom: BorderSide(
                                   width: 3,
-                                  color: Colors.black,
+                                  color: deviceType == DeviceScreenType.mobile
+                                      ? colorScheme.primary
+                                      : Colors.black,
                                 ),
                               ),
                             )
                           : null,
                       child: ShadButton.ghost(
                         onPressed: () => _onItemTapped(0),
-                        hoverBackgroundColor: colorScheme.primaryForeground,
+                        hoverBackgroundColor: colorScheme.accent.withAlpha(155),
                         child: Text(
                           'Dados do usuário',
-                          style: textTheme.p.copyWith(
-                            color: Colors.black,
-                            fontWeight: FontWeight.bold,
-                          ),
+                          style: deviceType == DeviceScreenType.mobile
+                              ? null
+                              : textTheme.p.copyWith(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold,
+                                ),
                         ),
                       ),
                     ),
@@ -165,20 +173,27 @@ class _UsersViewState extends State<UsersView> {
                                 border: Border(
                                   bottom: BorderSide(
                                     width: 3,
-                                    color: Colors.black,
+                                    color: deviceType == DeviceScreenType.mobile
+                                        ? colorScheme.primary
+                                        : Colors.black,
                                   ),
                                 ),
                               )
                             : null,
                         child: ShadButton.ghost(
                           onPressed: () => _onItemTapped(1),
-                          hoverBackgroundColor: colorScheme.primaryForeground,
+                          hoverBackgroundColor: colorScheme.accent.withAlpha(
+                            155,
+                          ),
+
                           child: Text(
                             'Lista de usuários',
-                            style: textTheme.p.copyWith(
-                              color: Colors.black,
-                              fontWeight: FontWeight.bold,
-                            ),
+                            style: deviceType == DeviceScreenType.mobile
+                                ? null
+                                : textTheme.p.copyWith(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                           ),
                         ),
                       ),
@@ -186,7 +201,10 @@ class _UsersViewState extends State<UsersView> {
                 ),
               ),
             ),
-            widget.child,
+            Padding(
+              padding: EdgeInsets.all(size.width * .03),
+              child: widget.child,
+            ),
           ],
         );
       },

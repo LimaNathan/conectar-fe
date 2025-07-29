@@ -1,6 +1,9 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:conectar_users_fe/common/commands/command_pattern.dart';
+import 'package:conectar_users_fe/common/utils/reponsivity_util.dart';
 import 'package:conectar_users_fe/models/auth/user_details.dart';
+import 'package:conectar_users_fe/models/utils/device_screen_type_enum.dart';
+import 'package:conectar_users_fe/presentation/components/home/logout_button.dart';
 import 'package:conectar_users_fe/presentation/viewmodels/auth/login_viewmodel.dart';
 import 'package:conectar_users_fe/presentation/viewmodels/user/user_viewmodel.dart';
 import 'package:flutter/material.dart';
@@ -21,7 +24,7 @@ class _HomeViewState extends State<HomeView> {
   late final LoginViewmodel loginViewmodel;
   final infoPopoverConroller = ShadPopoverController();
   final notificationsPopoverController = ShadPopoverController();
-  final logoutPopoverController = ShadPopoverController();
+  final responsivity = ResponsivityUtil();
   int _selectedIndex = 0;
 
   UserDetails? user;
@@ -93,146 +96,150 @@ class _HomeViewState extends State<HomeView> {
     final colorScheme = ShadTheme.of(context).colorScheme;
     final textTheme = ShadTheme.of(context).textTheme;
     return Scaffold(
-      appBar: AppBar(
-        leading: Padding(
-          padding: EdgeInsets.symmetric(
-            horizontal: size.width * .0035,
-            vertical: size.height * .003,
-          ),
-          child: Image.asset(
-            'assets/logo_conectar.png',
-            fit: BoxFit.contain,
-            color: Colors.white,
-          ),
-        ),
-        actions: [
-          ShadPopover(
-            controller: infoPopoverConroller,
-            popover: (context) => Text('Em desenvolvimento.'),
-            child: ShadButton.ghost(
-              hoverBackgroundColor: colorScheme.background.withAlpha(50),
-              onPressed: infoPopoverConroller.toggle,
-              child: Icon(LucideIcons.info300, size: 18, color: Colors.white),
-            ),
-          ),
-          ShadPopover(
-            controller: notificationsPopoverController,
-            popover: (context) => Text('Em desenvolvimento.'),
-            child: ShadButton.ghost(
-              hoverBackgroundColor: colorScheme.background.withAlpha(50),
-              onPressed: notificationsPopoverController.toggle,
-              child: Icon(
-                LucideIcons.bellRing300,
-                size: 18,
-                color: Colors.white,
+      appBar: responsivity.getDeviceType(context) != DeviceScreenType.mobile
+          ? AppBar(
+              leading: Padding(
+                padding: EdgeInsets.symmetric(
+                  horizontal: size.width * .0035,
+                  vertical: size.height * .003,
+                ),
+                child: Image.asset(
+                  'assets/logo_conectar.png',
+                  fit: BoxFit.contain,
+                  color: Colors.white,
+                ),
               ),
-            ),
-          ),
-          ShadPopover(
-            controller: logoutPopoverController,
-            popover: (context) => Padding(
-              padding: EdgeInsets.all(size.width * .015),
-              child: Column(
-                spacing: size.height * .015,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text('Deseja mesmo sair?'),
-                  Row(
-                    spacing: size.width * .015,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      ShadButton.ghost(
-                        onPressed: logoutPopoverController.toggle,
-                        child: Text('Não', style: textTheme.small),
-                      ),
-                      ShadButton(
-                        onPressed: loginViewmodel.logoutCommand.call,
-                        child: Text(
-                          'Sim',
-                          style: textTheme.small.copyWith(color: Colors.white),
-                        ),
-                      ),
-                    ],
+              actions: [
+                ShadPopover(
+                  controller: infoPopoverConroller,
+                  popover: (context) => Text('Em desenvolvimento.'),
+                  child: ShadButton.ghost(
+                    hoverBackgroundColor: colorScheme.background.withAlpha(50),
+                    onPressed: infoPopoverConroller.toggle,
+                    child: Icon(
+                      LucideIcons.info300,
+                      size: 18,
+                      color: Colors.white,
+                    ),
                   ),
-                ],
-              ),
-            ),
-            child: ShadButton.ghost(
-              hoverBackgroundColor: colorScheme.background.withAlpha(50),
-              onPressed: logoutPopoverController.toggle,
-              child: Icon(LucideIcons.logOut300, size: 18, color: Colors.white),
-            ),
-          ),
-        ],
-
-        leadingWidth: size.width * .08,
-        centerTitle: false,
-        toolbarHeight: size.height * .08,
-        backgroundColor: colorScheme.primary,
-        title: ListenableBuilder(
-          listenable: userViewmodel.getUserDetailsCommand,
-          builder: (context, _) {
-            return Padding(
-              padding: EdgeInsets.zero,
-              child: Padding(
-                padding: EdgeInsets.only(left: 8.0),
-                child: Row(
-                  children: [
-                    Container(
-                      padding: EdgeInsets.only(bottom: size.width * .0025),
-                      decoration: _selectedIndex == 0
-                          ? BoxDecoration(
-                              border: Border(
-                                bottom: BorderSide(
-                                  width: 3,
+                ),
+                ShadPopover(
+                  controller: notificationsPopoverController,
+                  popover: (context) => Text('Em desenvolvimento.'),
+                  child: ShadButton.ghost(
+                    hoverBackgroundColor: colorScheme.background.withAlpha(50),
+                    onPressed: notificationsPopoverController.toggle,
+                    child: Icon(
+                      LucideIcons.bellRing300,
+                      size: 18,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+                LogoutButton(),
+              ],
+              leadingWidth: size.width * .08,
+              centerTitle: false,
+              toolbarHeight: size.height * .08,
+              backgroundColor: colorScheme.primary,
+              title: ListenableBuilder(
+                listenable: userViewmodel.getUserDetailsCommand,
+                builder: (context, _) {
+                  return Padding(
+                    padding: EdgeInsets.zero,
+                    child: Padding(
+                      padding: EdgeInsets.only(left: 8.0),
+                      child: Row(
+                        children: [
+                          Container(
+                            padding: EdgeInsets.only(
+                              bottom: size.width * .0025,
+                            ),
+                            decoration: _selectedIndex == 0
+                                ? BoxDecoration(
+                                    border: Border(
+                                      bottom: BorderSide(
+                                        width: 3,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  )
+                                : null,
+                            child: ShadButton.ghost(
+                              onPressed: () => _onItemTapped(0),
+                              hoverBackgroundColor:
+                                  colorScheme.primaryForeground,
+                              child: Text(
+                                'Clientes',
+                                style: textTheme.small.copyWith(
                                   color: Colors.white,
                                 ),
                               ),
-                            )
-                          : null,
-                      child: ShadButton.ghost(
-                        onPressed: () => _onItemTapped(0),
-                        hoverBackgroundColor: colorScheme.primaryForeground,
-                        child: Text(
-                          'Clientes',
-                          style: textTheme.small.copyWith(color: Colors.white),
-                        ),
-                      ),
-                    ),
-                    if (user != null)
-                      Container(
-                        padding: EdgeInsets.only(bottom: size.width * .0025),
-                        decoration: _selectedIndex == 1
-                            ? BoxDecoration(
-                                border: Border(
-                                  bottom: BorderSide(
-                                    width: 3,
+                            ),
+                          ),
+                          if (user != null)
+                            Container(
+                              padding: EdgeInsets.only(
+                                bottom: size.width * .0025,
+                              ),
+                              decoration: _selectedIndex == 1
+                                  ? BoxDecoration(
+                                      border: Border(
+                                        bottom: BorderSide(
+                                          width: 3,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                    )
+                                  : null,
+                              child: ShadButton.ghost(
+                                onPressed: () => _onItemTapped(1),
+                                hoverBackgroundColor:
+                                    colorScheme.primaryForeground,
+                                child: Text(
+                                  'Usuários',
+                                  style: textTheme.small.copyWith(
                                     color: Colors.white,
                                   ),
                                 ),
-                              )
-                            : null,
-                        child: ShadButton.ghost(
-                          onPressed: () => _onItemTapped(1),
-
-                          hoverBackgroundColor: colorScheme.primaryForeground,
-                          child: Text(
-                            'Usuários',
-                            style: textTheme.small.copyWith(
-                              color: Colors.white,
+                              ),
                             ),
-                          ),
-                        ),
+                        ],
                       ),
-                  ],
-                ),
+                    ),
+                  );
+                },
               ),
-            );
-          },
-        ),
-      ),
+            )
+          : AppBar(
+              backgroundColor: colorScheme.primary,
+              title: Image.asset(
+                'assets/logo_conectar.png',
+                fit: BoxFit.contain,
+                color: Colors.white,
+                height: size.height * .05,
+              ),
+              centerTitle: true,
+              actions: [LogoutButton()],
+            ),
       body: widget.child,
+      bottomNavigationBar:
+          responsivity.getDeviceType(context) == DeviceScreenType.mobile
+          ? BottomNavigationBar(
+              currentIndex: _selectedIndex,
+              onTap: _onItemTapped,
+              items: [
+                BottomNavigationBarItem(
+                  icon: Icon(LucideIcons.users),
+                  label: 'Clientes',
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(LucideIcons.user),
+                  label: 'Usuários',
+                ),
+              ],
+            )
+          : null,
     );
   }
 }

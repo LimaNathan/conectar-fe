@@ -1,8 +1,11 @@
 import 'package:conectar_users_fe/common/commands/command_pattern.dart';
+import 'package:conectar_users_fe/common/utils/reponsivity_util.dart';
 import 'package:conectar_users_fe/models/clients/dto/client_dto.dart';
+import 'package:conectar_users_fe/models/utils/device_screen_type_enum.dart';
 import 'package:conectar_users_fe/presentation/components/clients/clients_dialog_component.dart';
 import 'package:conectar_users_fe/presentation/components/clients/clients_filters_component.dart';
 import 'package:conectar_users_fe/presentation/components/clients/clients_table_component.dart';
+import 'package:conectar_users_fe/presentation/components/common/filters_title.dart';
 import 'package:conectar_users_fe/presentation/viewmodels/clients/client_viewmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -17,6 +20,7 @@ class ClientsListView extends StatefulWidget {
 
 class _ClientsListViewState extends State<ClientsListView> {
   late final ClientViewmodel clientViewmodel;
+  final responsivity = ResponsivityUtil();
 
   @override
   void initState() {
@@ -53,6 +57,29 @@ class _ClientsListViewState extends State<ClientsListView> {
     final colorScheme = ShadTheme.of(context).colorScheme;
     final textTheme = ShadTheme.of(context).textTheme;
     final size = MediaQuery.sizeOf(context);
+    final deviceType = responsivity.getDeviceType(context);
+
+    if (deviceType == DeviceScreenType.mobile) {
+      return ListView(
+        shrinkWrap: true,
+        children: [
+          Text('Clientes', style: textTheme.large),
+          ShadAccordion<String>(
+            children: [
+              ShadAccordionItem(
+                value: 'filters',
+                title: FiltersTitle(),
+
+                child: ClientsFiltersComponent(),
+              ),
+            ],
+          ),
+          Text('Clientes', style: textTheme.large),
+          ClientsTable(),
+        ],
+      );
+    }
+
     return Column(
       spacing: size.height * .03,
       children: [
@@ -87,7 +114,6 @@ class _ClientsListViewState extends State<ClientsListView> {
                       ),
                     ),
                   ),
-
                   child: ClientsFiltersComponent(),
                 ),
               ],
@@ -135,9 +161,7 @@ class _ClientsListViewState extends State<ClientsListView> {
                   ),
                 ),
               ),
-
               SizedBox(height: size.height * .03),
-
               ClientsTable(),
             ],
           ),

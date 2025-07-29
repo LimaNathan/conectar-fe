@@ -1,6 +1,8 @@
 import 'package:conectar_users_fe/common/commands/command_pattern.dart';
+import 'package:conectar_users_fe/common/utils/reponsivity_util.dart';
 import 'package:conectar_users_fe/models/auth/user_details.dart';
 import 'package:conectar_users_fe/models/users/user_pagination_result.dart';
+import 'package:conectar_users_fe/models/utils/device_screen_type_enum.dart';
 import 'package:conectar_users_fe/presentation/components/common/error_component.dart';
 import 'package:conectar_users_fe/presentation/components/common/no_data_component.dart';
 import 'package:conectar_users_fe/presentation/components/common/pagination_builder.dart';
@@ -19,6 +21,7 @@ class UsersTable extends StatefulWidget {
 
 class _UsersTableState extends State<UsersTable> {
   late final UserViewmodel userViewmodel;
+  final responsivity = ResponsivityUtil();
 
   @override
   void initState() {
@@ -32,6 +35,7 @@ class _UsersTableState extends State<UsersTable> {
     final colorScheme = ShadTheme.of(context).colorScheme;
     final textTheme = ShadTheme.of(context).textTheme;
     final size = MediaQuery.sizeOf(context);
+    final deviceType = responsivity.getDeviceType(context);
 
     return ListenableBuilder(
       listenable: userViewmodel.getAllCommand,
@@ -89,6 +93,32 @@ class _UsersTableState extends State<UsersTable> {
             return NoDataComponent(
               message:
                   'Não foram encontrados dados, refine os filtros ou cadastre um novo usuário.',
+            );
+          }
+
+          if (deviceType == DeviceScreenType.mobile) {
+            return ListView.builder(
+              shrinkWrap: true,
+              itemCount: resultValue.data.length,
+              itemBuilder: (context, index) {
+                final user = resultValue.data[index];
+                return ShadCard(
+                  child: ListTile(
+                    title: Text(user.name ?? 'Não informado'),
+                    subtitle: Text(user.email ?? 'Não informado'),
+                    onTap: () => showShadDialog(
+                      context: context,
+                      builder: (_) => UserDialog(
+                        user: UserDetails(
+                          email: user.email,
+                          name: user.name,
+                          sub: user.id,
+                        ),
+                      ),
+                    ),
+                  ),
+                );
+              },
             );
           }
 

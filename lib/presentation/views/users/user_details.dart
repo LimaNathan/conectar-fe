@@ -1,5 +1,7 @@
 import 'package:conectar_users_fe/common/commands/command_pattern.dart';
+import 'package:conectar_users_fe/common/utils/reponsivity_util.dart';
 import 'package:conectar_users_fe/models/auth/user_details.dart';
+import 'package:conectar_users_fe/models/utils/device_screen_type_enum.dart';
 import 'package:conectar_users_fe/presentation/components/common/no_data_component.dart';
 import 'package:conectar_users_fe/presentation/components/users/user_dialog_component.dart';
 import 'package:conectar_users_fe/presentation/viewmodels/user/user_viewmodel.dart';
@@ -16,6 +18,7 @@ class UsersDetailsView extends StatefulWidget {
 
 class _UsersDetailsViewState extends State<UsersDetailsView> {
   late final UserViewmodel userViewmodel;
+  final responsivity = ResponsivityUtil();
 
   @override
   void initState() {
@@ -48,6 +51,8 @@ class _UsersDetailsViewState extends State<UsersDetailsView> {
   Widget build(BuildContext context) {
     final size = MediaQuery.sizeOf(context);
     final colorScheme = ShadTheme.of(context).colorScheme;
+    final deviceType = responsivity.getDeviceType(context);
+
     return ListenableBuilder(
       listenable: userViewmodel.getUserDetailsCommand,
       builder: (context, child) {
@@ -61,7 +66,9 @@ class _UsersDetailsViewState extends State<UsersDetailsView> {
           return Padding(
             padding: EdgeInsets.symmetric(
               vertical: size.width * .03,
-              horizontal: size.width * .35,
+              horizontal: deviceType == DeviceScreenType.mobile
+                  ? 0
+                  : size.width * .35,
             ),
             child: ShadCard(
               title: Text('Dados do usuário'),

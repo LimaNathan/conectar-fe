@@ -1,4 +1,6 @@
+import 'package:conectar_users_fe/common/utils/reponsivity_util.dart';
 import 'package:conectar_users_fe/models/users/dto/user_pagination_query.dart';
+import 'package:conectar_users_fe/models/utils/device_screen_type_enum.dart';
 import 'package:conectar_users_fe/presentation/viewmodels/user/user_viewmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -13,6 +15,7 @@ class UsersFiltersComponent extends StatefulWidget {
 
 class _UsersFiltersComponentState extends State<UsersFiltersComponent> {
   late final UserViewmodel userViewmodel;
+  final responsivity = ResponsivityUtil();
 
   final nameEC = TextEditingController();
   final emailEC = TextEditingController();
@@ -45,6 +48,73 @@ class _UsersFiltersComponentState extends State<UsersFiltersComponent> {
     final size = MediaQuery.sizeOf(context);
     final textTheme = ShadTheme.of(context).textTheme;
     final colorScheme = ShadTheme.of(context).colorScheme;
+    final deviceType = responsivity.getDeviceType(context);
+
+    if (deviceType == DeviceScreenType.mobile) {
+      return ListView(
+        shrinkWrap: true,
+        children: [
+          ShadInputFormField(
+            controller: nameEC,
+            onSubmitted: onSend,
+            label: Text('Buscar por nome', style: textTheme.small),
+            onChanged: (value) => userViewmodel.query.name = value,
+          ),
+          SizedBox(height: size.height * .03),
+
+          ShadInputFormField(
+            controller: emailEC,
+            onSubmitted: onSend,
+            label: Text('Buscar por e-mail', style: textTheme.small),
+            onChanged: (value) => userViewmodel.query.email = value,
+          ),
+          SizedBox(height: size.height * .03),
+
+          ShadInputFormField(
+            controller: roleEC,
+            onSubmitted: onSend,
+            label: Text('Buscar por papel', style: textTheme.small),
+            onChanged: (value) => userViewmodel.query.role = value,
+          ),
+          SizedBox(height: size.height * .03),
+
+          ShadSelect<OrderDirection>(
+            controller: orderController,
+            header: const Text('Selecione uma ordem'),
+            allowDeselection: true,
+            onChanged: (value) => userViewmodel.query.order = value,
+            placeholder: const Text('Ordenar por'),
+            options: OrderDirection.values
+                .map(
+                  (e) =>
+                      ShadOption(value: e, child: Text(e.name.toUpperCase())),
+                )
+                .toList(),
+            selectedOptionBuilder: (context, value) =>
+                Text(value.name.toUpperCase()),
+          ),
+          SizedBox(height: size.height * .03),
+          Row(
+            spacing: size.width * .04,
+            children: [
+              Expanded(
+                child: ShadButton.outline(
+                  onPressed: cleanFilters,
+                  child: Text('Limpar campos'),
+                ),
+              ),
+              Expanded(
+                child: ShadButton(
+                  onPressed: userViewmodel.getAllCommand.call,
+                  child: Text('Filtrar'),
+                ),
+              ),
+            ],
+          ),
+          SizedBox(height: size.height * .03),
+        ],
+      );
+    }
 
     return SizedBox(
       height: size.height * .45,
@@ -81,7 +151,6 @@ class _UsersFiltersComponentState extends State<UsersFiltersComponent> {
               ),
             ],
           ),
-
           Row(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.end,
@@ -122,7 +191,6 @@ class _UsersFiltersComponentState extends State<UsersFiltersComponent> {
               ),
             ],
           ),
-
           SizedBox(
             width: size.width * .215,
             child: Row(

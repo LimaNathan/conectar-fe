@@ -320,6 +320,7 @@ class _UserDialogState extends State<UserDialog> {
                         ),
                         if (isAdmin)
                           ShadSelect<UserRole>(
+                            initialValue: _role,
                             controller: roleController,
                             header: const Text('Selecione um papel'),
                             allowDeselection: true,
