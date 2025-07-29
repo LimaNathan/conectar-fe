@@ -1,5 +1,7 @@
 import 'dart:developer';
 
+import 'package:conectar_users_fe/common/endpoints/endpoints.dart';
+import 'package:conectar_users_fe/common/exceptions/app_exception.dart';
 import 'package:conectar_users_fe/data/interceptors/implementations/dio_api_interceptor.dart';
 import 'package:conectar_users_fe/data/services/interfaces/api_interface.dart';
 import 'package:conectar_users_fe/data/services/interfaces/local_storage_interface.dart';
@@ -31,7 +33,7 @@ class DioApiImpl implements ApiInterface<Response?> {
   final _dio = Dio();
   final LocalStorageInterface _localStorage;
 
-  Future _checkHeaders() async {
+  Future _checkHeaders({String? path}) async {
     if (!_dio.options.headers.containsKey('Authorization')) {
       log('Não tem o authorization no header, buscando...', name: 'DIO');
       final String? token = await _localStorage.getValue('access_token');
@@ -52,6 +54,12 @@ class DioApiImpl implements ApiInterface<Response?> {
         }
       } else {
         log('Não tem token...', name: 'DIO');
+        log('path: $path');
+        if (path != Endpoints.login) {
+          throw UnauthorizedException(
+            'Sessão expirada, faça o login novamente',
+          );
+        }
       }
     }
   }
@@ -63,7 +71,7 @@ class DioApiImpl implements ApiInterface<Response?> {
     Map<String, dynamic>? queryParms,
   }) async {
     try {
-      await _checkHeaders();
+      await _checkHeaders(path: url);
       final response = await _dio.delete(
         url,
         data: data,
@@ -84,7 +92,7 @@ class DioApiImpl implements ApiInterface<Response?> {
     bool? withoutBaseURL,
   }) async {
     try {
-      await _checkHeaders();
+      await _checkHeaders(path: url);
 
       final response = await _dio.get(
         url,
@@ -105,7 +113,7 @@ class DioApiImpl implements ApiInterface<Response?> {
     Map<String, dynamic>? queryParms,
   }) async {
     try {
-      await _checkHeaders();
+      await _checkHeaders(path: url);
 
       final response = await _dio.post(
         url,
@@ -126,7 +134,7 @@ class DioApiImpl implements ApiInterface<Response?> {
     Map<String, dynamic>? queryParms,
   }) async {
     try {
-      await _checkHeaders();
+      await _checkHeaders(path: url);
 
       final response = await _dio.put(
         url,

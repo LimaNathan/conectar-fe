@@ -25,6 +25,11 @@ class _ClientsViewState extends State<ClientsView> {
     clientViewmodel = context.read<ClientViewmodel>();
 
     clientViewmodel.getAllCommand.addListener(listener);
+    switch (GoRouter.of(context).state.path) {
+      case '/clients/list':
+        _selectedIndex = 0;
+      default:
+    }
   }
 
   listener() {

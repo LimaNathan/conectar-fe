@@ -1,8 +1,6 @@
 import 'package:conectar_users_fe/common/providers/app_providers.dart';
 import 'package:conectar_users_fe/common/routes/app_routes.dart';
-import 'package:conectar_users_fe/data/services/implementations/auth_redirect_impl.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
@@ -20,16 +18,6 @@ class MyApp extends StatelessWidget {
       child: ShadApp.router(
         routerConfig: appRouter,
         title: 'Conéctar',
-        builder: (context, child) {
-          final authService = AuthRedirectImpl();
-
-          if (authService.unauthorized) {
-            authService.reset();
-            context.go('/');
-          }
-
-          return child ?? Container();
-        },
         theme: ShadThemeData(
           brightness: Brightness.light,
           cardTheme: ShadCardTheme(

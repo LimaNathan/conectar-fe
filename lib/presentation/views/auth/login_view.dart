@@ -28,6 +28,7 @@ class _LoginViewState extends State<LoginView> {
   @override
   void dispose() {
     _loginViewModel.loginCommand.removeListener(_onLoginResult);
+
     super.dispose();
   }
 

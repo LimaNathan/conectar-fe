@@ -101,7 +101,7 @@ class _ClientsListViewState extends State<ClientsListView> {
             children: [
               ListTile(
                 subtitle: Text(
-                  'Selecione um cliente para ediar suas informações',
+                  'Selecione um cliente para editar suas informações',
                   style: textStyle.lead.copyWith(fontSize: 12),
                 ),
                 title: Text(

@@ -26,6 +26,12 @@ class _AuthFormComponentState extends State<AuthFormComponent> {
     vm = context.read<LoginViewmodel>();
   }
 
+  onSend() {
+    if (_formKey.currentState?.validate() ?? false) {
+      vm.loginCommand.call(_credentials);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final colorScheme = ShadTheme.of(context).colorScheme;
@@ -42,6 +48,8 @@ class _AuthFormComponentState extends State<AuthFormComponent> {
             placeholder: const Text('Digite seu email'),
             autovalidateMode: AutovalidateMode.onUnfocus,
             keyboardType: TextInputType.emailAddress,
+            onSubmitted: (value) => onSend(),
+
             onChanged: (value) {
               setState(() {
                 _credentials = _credentials.copyWith(email: value);
@@ -63,6 +71,8 @@ class _AuthFormComponentState extends State<AuthFormComponent> {
                     'Senha',
                     style: ShadTheme.of(context).textTheme.small,
                   ),
+                  onSubmitted: (value) => onSend(),
+
                   placeholder: const Text('Digite sua senha'),
                   obscureText: !_isPasswordVisible,
                   onChanged: (value) {
@@ -109,11 +119,7 @@ class _AuthFormComponentState extends State<AuthFormComponent> {
                 width: double.infinity,
                 enabled: !vm.loginCommand.running,
                 backgroundColor: colorScheme.primary,
-                onPressed: () {
-                  if (_formKey.currentState?.validate() ?? false) {
-                    vm.loginCommand.call(_credentials);
-                  }
-                },
+                onPressed: onSend,
                 child: vm.loginCommand.running
                     ? SizedBox(
                         height: 20,

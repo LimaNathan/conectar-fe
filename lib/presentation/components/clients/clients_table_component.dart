@@ -155,6 +155,8 @@ class _ClientsTableState extends State<ClientsTable> {
                     ],
 
                     onRowTap: (row) {
+                      if (row == 0) return;
+
                       showShadDialog(
                         context: context,
                         builder: (context) =>

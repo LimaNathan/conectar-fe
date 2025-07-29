@@ -6,3 +6,8 @@ class AppException implements Exception {
   @override
   String toString() => message;
 }
+
+
+class UnauthorizedException extends AppException{
+  UnauthorizedException(super.message);
+}

@@ -2,6 +2,7 @@
 import 'package:conectar_users_fe/common/commands/command_pattern.dart';
 import 'package:conectar_users_fe/models/auth/user_details.dart';
 import 'package:conectar_users_fe/presentation/viewmodels/auth/login_viewmodel.dart';
+import 'package:conectar_users_fe/presentation/viewmodels/user/user_viewmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
@@ -16,7 +17,12 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
+  late final UserViewmodel userViewmodel;
   late final LoginViewmodel loginViewmodel;
+  final infoPopoverConroller = ShadPopoverController();
+  final notificationsPopoverController = ShadPopoverController();
+  final logoutPopoverController = ShadPopoverController();
+  int _selectedIndex = 0;
 
   UserDetails? user;
 
@@ -24,27 +30,47 @@ class _HomeViewState extends State<HomeView> {
   void initState() {
     super.initState();
 
+    userViewmodel = context.read<UserViewmodel>();
     loginViewmodel = context.read<LoginViewmodel>();
 
-    loginViewmodel.getUserDetailsCommand
+    userViewmodel.getUserDetailsCommand
       ..call()
       ..addListener(_userListener);
+    loginViewmodel.logoutCommand.addListener(_listener);
+
+    switch (GoRouter.of(context).state.path) {
+      case '/clients/list':
+        _selectedIndex = 0;
+
+        break;
+      case '/users/details':
+        _selectedIndex = 1;
+
+        break;
+      default:
+    }
   }
 
   _userListener() {
-    if (loginViewmodel.getUserDetailsCommand.isSuccess) {
-      user = (loginViewmodel.getUserDetailsCommand.result as Ok<UserDetails>)
-          .value;
+    if (userViewmodel.getUserDetailsCommand.isSuccess) {
+      user =
+          (userViewmodel.getUserDetailsCommand.result as Ok<UserDetails>).value;
+    }
+  }
+
+  void _listener() {
+    if (loginViewmodel.logoutCommand.isSuccess) {
+      context.go('/');
     }
   }
 
   @override
   void dispose() {
-    loginViewmodel.getUserDetailsCommand.removeListener(_userListener);
+    userViewmodel.getUserDetailsCommand.removeListener(_userListener);
+    loginViewmodel.logoutCommand.removeListener(_listener);
+
     super.dispose();
   }
-
-  int _selectedIndex = 0;
 
   void _onItemTapped(int index) {
     setState(() {
@@ -57,7 +83,7 @@ class _HomeViewState extends State<HomeView> {
 
         break;
       case 1:
-        context.go('/users');
+        context.go('/users/details');
     }
   }
 
@@ -79,13 +105,73 @@ class _HomeViewState extends State<HomeView> {
             color: Colors.white,
           ),
         ),
+        actions: [
+          ShadPopover(
+            controller: infoPopoverConroller,
+            popover: (context) => Text('Em desenvolvimento.'),
+            child: ShadButton.ghost(
+              hoverBackgroundColor: colorScheme.background.withAlpha(50),
+              onPressed: infoPopoverConroller.toggle,
+              child: Icon(LucideIcons.info300, size: 18, color: Colors.white),
+            ),
+          ),
+          ShadPopover(
+            controller: notificationsPopoverController,
+            popover: (context) => Text('Em desenvolvimento.'),
+            child: ShadButton.ghost(
+              hoverBackgroundColor: colorScheme.background.withAlpha(50),
+              onPressed: notificationsPopoverController.toggle,
+              child: Icon(
+                LucideIcons.bellRing300,
+                size: 18,
+                color: Colors.white,
+              ),
+            ),
+          ),
+          ShadPopover(
+            controller: logoutPopoverController,
+            popover: (context) => Padding(
+              padding: EdgeInsets.all(size.width * .015),
+              child: Column(
+                spacing: size.height * .015,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text('Deseja mesmo sair?'),
+                  Row(
+                    spacing: size.width * .015,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      ShadButton.ghost(
+                        onPressed: logoutPopoverController.toggle,
+                        child: Text('Não', style: textTheme.small),
+                      ),
+                      ShadButton(
+                        onPressed: loginViewmodel.logoutCommand.call,
+                        child: Text(
+                          'Sim',
+                          style: textTheme.small.copyWith(color: Colors.white),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+            child: ShadButton.ghost(
+              hoverBackgroundColor: colorScheme.background.withAlpha(50),
+              onPressed: logoutPopoverController.toggle,
+              child: Icon(LucideIcons.logOut300, size: 18, color: Colors.white),
+            ),
+          ),
+        ],
 
         leadingWidth: size.width * .08,
         centerTitle: false,
         toolbarHeight: size.height * .08,
         backgroundColor: colorScheme.primary,
         title: ListenableBuilder(
-          listenable: loginViewmodel.getUserDetailsCommand,
+          listenable: userViewmodel.getUserDetailsCommand,
           builder: (context, _) {
             return Padding(
               padding: EdgeInsets.zero,
@@ -114,7 +200,7 @@ class _HomeViewState extends State<HomeView> {
                         ),
                       ),
                     ),
-                    if (user != null && user!.role == 'ADMIN')
+                    if (user != null)
                       Container(
                         padding: EdgeInsets.only(bottom: size.width * .0025),
                         decoration: _selectedIndex == 1

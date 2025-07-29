@@ -23,6 +23,10 @@ UserDTO _$UserDTOFromJson(
           return UpdateUserDTO.fromJson(
             json
           );
+                case 'paginated':
+          return PaginatedUserDTO.fromJson(
+            json
+          );
         
           default:
             throw CheckedFromJsonException(
@@ -38,7 +42,7 @@ UserDTO _$UserDTOFromJson(
 /// @nodoc
 mixin _$UserDTO {
 
- String? get name; String? get email; String? get password;
+ String? get name; String? get email; String? get password; String? get role;
 /// Create a copy of UserDTO
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -51,16 +55,16 @@ $UserDTOCopyWith<UserDTO> get copyWith => _$UserDTOCopyWithImpl<UserDTO>(this as
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is UserDTO&&(identical(other.name, name) || other.name == name)&&(identical(other.email, email) || other.email == email)&&(identical(other.password, password) || other.password == password));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is UserDTO&&(identical(other.name, name) || other.name == name)&&(identical(other.email, email) || other.email == email)&&(identical(other.password, password) || other.password == password)&&(identical(other.role, role) || other.role == role));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,name,email,password);
+int get hashCode => Object.hash(runtimeType,name,email,password,role);
 
 @override
 String toString() {
-  return 'UserDTO(name: $name, email: $email, password: $password)';
+  return 'UserDTO(name: $name, email: $email, password: $password, role: $role)';
 }
 
 
@@ -71,7 +75,7 @@ abstract mixin class $UserDTOCopyWith<$Res>  {
   factory $UserDTOCopyWith(UserDTO value, $Res Function(UserDTO) _then) = _$UserDTOCopyWithImpl;
 @useResult
 $Res call({
- String name, String email, String password
+ String name, String email, String password, String? role
 });
 
 
@@ -88,12 +92,13 @@ class _$UserDTOCopyWithImpl<$Res>
 
 /// Create a copy of UserDTO
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? name = null,Object? email = null,Object? password = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? name = null,Object? email = null,Object? password = null,Object? role = freezed,}) {
   return _then(_self.copyWith(
 name: null == name ? _self.name! : name // ignore: cast_nullable_to_non_nullable
 as String,email: null == email ? _self.email! : email // ignore: cast_nullable_to_non_nullable
 as String,password: null == password ? _self.password! : password // ignore: cast_nullable_to_non_nullable
-as String,
+as String,role: freezed == role ? _self.role : role // ignore: cast_nullable_to_non_nullable
+as String?,
   ));
 }
 
@@ -114,12 +119,13 @@ extension UserDTOPatterns on UserDTO {
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( CreateUserDTO value)?  $default,{TResult Function( UpdateUserDTO value)?  update,required TResult orElse(),}){
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( CreateUserDTO value)?  $default,{TResult Function( UpdateUserDTO value)?  update,TResult Function( PaginatedUserDTO value)?  paginated,required TResult orElse(),}){
 final _that = this;
 switch (_that) {
 case CreateUserDTO() when $default != null:
 return $default(_that);case UpdateUserDTO() when update != null:
-return update(_that);case _:
+return update(_that);case PaginatedUserDTO() when paginated != null:
+return paginated(_that);case _:
   return orElse();
 
 }
@@ -137,12 +143,13 @@ return update(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( CreateUserDTO value)  $default,{required TResult Function( UpdateUserDTO value)  update,}){
+@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( CreateUserDTO value)  $default,{required TResult Function( UpdateUserDTO value)  update,required TResult Function( PaginatedUserDTO value)  paginated,}){
 final _that = this;
 switch (_that) {
 case CreateUserDTO():
 return $default(_that);case UpdateUserDTO():
-return update(_that);case _:
+return update(_that);case PaginatedUserDTO():
+return paginated(_that);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -159,12 +166,13 @@ return update(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( CreateUserDTO value)?  $default,{TResult? Function( UpdateUserDTO value)?  update,}){
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( CreateUserDTO value)?  $default,{TResult? Function( UpdateUserDTO value)?  update,TResult? Function( PaginatedUserDTO value)?  paginated,}){
 final _that = this;
 switch (_that) {
 case CreateUserDTO() when $default != null:
 return $default(_that);case UpdateUserDTO() when update != null:
-return update(_that);case _:
+return update(_that);case PaginatedUserDTO() when paginated != null:
+return paginated(_that);case _:
   return null;
 
 }
@@ -181,11 +189,12 @@ return update(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String name,  String email,  String password)?  $default,{TResult Function( String? name,  String? email,  String? password)?  update,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String name,  String email,  String password,  String? role)?  $default,{TResult Function( String? name,  String? email,  String? role,  String? password)?  update,TResult Function( int? id,  String? name,  String? email,  String? password,  String? role)?  paginated,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case CreateUserDTO() when $default != null:
-return $default(_that.name,_that.email,_that.password);case UpdateUserDTO() when update != null:
-return update(_that.name,_that.email,_that.password);case _:
+return $default(_that.name,_that.email,_that.password,_that.role);case UpdateUserDTO() when update != null:
+return update(_that.name,_that.email,_that.role,_that.password);case PaginatedUserDTO() when paginated != null:
+return paginated(_that.id,_that.name,_that.email,_that.password,_that.role);case _:
   return orElse();
 
 }
@@ -203,11 +212,12 @@ return update(_that.name,_that.email,_that.password);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String name,  String email,  String password)  $default,{required TResult Function( String? name,  String? email,  String? password)  update,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String name,  String email,  String password,  String? role)  $default,{required TResult Function( String? name,  String? email,  String? role,  String? password)  update,required TResult Function( int? id,  String? name,  String? email,  String? password,  String? role)  paginated,}) {final _that = this;
 switch (_that) {
 case CreateUserDTO():
-return $default(_that.name,_that.email,_that.password);case UpdateUserDTO():
-return update(_that.name,_that.email,_that.password);case _:
+return $default(_that.name,_that.email,_that.password,_that.role);case UpdateUserDTO():
+return update(_that.name,_that.email,_that.role,_that.password);case PaginatedUserDTO():
+return paginated(_that.id,_that.name,_that.email,_that.password,_that.role);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -224,11 +234,12 @@ return update(_that.name,_that.email,_that.password);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String name,  String email,  String password)?  $default,{TResult? Function( String? name,  String? email,  String? password)?  update,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String name,  String email,  String password,  String? role)?  $default,{TResult? Function( String? name,  String? email,  String? role,  String? password)?  update,TResult? Function( int? id,  String? name,  String? email,  String? password,  String? role)?  paginated,}) {final _that = this;
 switch (_that) {
 case CreateUserDTO() when $default != null:
-return $default(_that.name,_that.email,_that.password);case UpdateUserDTO() when update != null:
-return update(_that.name,_that.email,_that.password);case _:
+return $default(_that.name,_that.email,_that.password,_that.role);case UpdateUserDTO() when update != null:
+return update(_that.name,_that.email,_that.role,_that.password);case PaginatedUserDTO() when paginated != null:
+return paginated(_that.id,_that.name,_that.email,_that.password,_that.role);case _:
   return null;
 
 }
@@ -240,12 +251,13 @@ return update(_that.name,_that.email,_that.password);case _:
 @JsonSerializable()
 
 class CreateUserDTO implements UserDTO {
-  const CreateUserDTO({required this.name, required this.email, required this.password, final  String? $type}): $type = $type ?? 'default';
+  const CreateUserDTO({required this.name, required this.email, required this.password, this.role, final  String? $type}): $type = $type ?? 'default';
   factory CreateUserDTO.fromJson(Map<String, dynamic> json) => _$CreateUserDTOFromJson(json);
 
 @override final  String name;
 @override final  String email;
 @override final  String password;
+@override final  String? role;
 
 @JsonKey(name: 'runtimeType')
 final String $type;
@@ -264,16 +276,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is CreateUserDTO&&(identical(other.name, name) || other.name == name)&&(identical(other.email, email) || other.email == email)&&(identical(other.password, password) || other.password == password));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is CreateUserDTO&&(identical(other.name, name) || other.name == name)&&(identical(other.email, email) || other.email == email)&&(identical(other.password, password) || other.password == password)&&(identical(other.role, role) || other.role == role));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,name,email,password);
+int get hashCode => Object.hash(runtimeType,name,email,password,role);
 
 @override
 String toString() {
-  return 'UserDTO(name: $name, email: $email, password: $password)';
+  return 'UserDTO(name: $name, email: $email, password: $password, role: $role)';
 }
 
 
@@ -284,7 +296,7 @@ abstract mixin class $CreateUserDTOCopyWith<$Res> implements $UserDTOCopyWith<$R
   factory $CreateUserDTOCopyWith(CreateUserDTO value, $Res Function(CreateUserDTO) _then) = _$CreateUserDTOCopyWithImpl;
 @override @useResult
 $Res call({
- String name, String email, String password
+ String name, String email, String password, String? role
 });
 
 
@@ -301,12 +313,13 @@ class _$CreateUserDTOCopyWithImpl<$Res>
 
 /// Create a copy of UserDTO
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? name = null,Object? email = null,Object? password = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? name = null,Object? email = null,Object? password = null,Object? role = freezed,}) {
   return _then(CreateUserDTO(
 name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
 as String,email: null == email ? _self.email : email // ignore: cast_nullable_to_non_nullable
 as String,password: null == password ? _self.password : password // ignore: cast_nullable_to_non_nullable
-as String,
+as String,role: freezed == role ? _self.role : role // ignore: cast_nullable_to_non_nullable
+as String?,
   ));
 }
 
@@ -317,11 +330,12 @@ as String,
 @JsonSerializable()
 
 class UpdateUserDTO implements UserDTO {
-  const UpdateUserDTO({required this.name, required this.email, required this.password, final  String? $type}): $type = $type ?? 'update';
+  const UpdateUserDTO({required this.name, required this.email, this.role, required this.password, final  String? $type}): $type = $type ?? 'update';
   factory UpdateUserDTO.fromJson(Map<String, dynamic> json) => _$UpdateUserDTOFromJson(json);
 
 @override final  String? name;
 @override final  String? email;
+@override final  String? role;
 @override final  String? password;
 
 @JsonKey(name: 'runtimeType')
@@ -341,16 +355,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is UpdateUserDTO&&(identical(other.name, name) || other.name == name)&&(identical(other.email, email) || other.email == email)&&(identical(other.password, password) || other.password == password));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is UpdateUserDTO&&(identical(other.name, name) || other.name == name)&&(identical(other.email, email) || other.email == email)&&(identical(other.role, role) || other.role == role)&&(identical(other.password, password) || other.password == password));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,name,email,password);
+int get hashCode => Object.hash(runtimeType,name,email,role,password);
 
 @override
 String toString() {
-  return 'UserDTO.update(name: $name, email: $email, password: $password)';
+  return 'UserDTO.update(name: $name, email: $email, role: $role, password: $password)';
 }
 
 
@@ -361,7 +375,7 @@ abstract mixin class $UpdateUserDTOCopyWith<$Res> implements $UserDTOCopyWith<$R
   factory $UpdateUserDTOCopyWith(UpdateUserDTO value, $Res Function(UpdateUserDTO) _then) = _$UpdateUserDTOCopyWithImpl;
 @override @useResult
 $Res call({
- String? name, String? email, String? password
+ String? name, String? email, String? role, String? password
 });
 
 
@@ -378,11 +392,93 @@ class _$UpdateUserDTOCopyWithImpl<$Res>
 
 /// Create a copy of UserDTO
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? name = freezed,Object? email = freezed,Object? password = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? name = freezed,Object? email = freezed,Object? role = freezed,Object? password = freezed,}) {
   return _then(UpdateUserDTO(
 name: freezed == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
 as String?,email: freezed == email ? _self.email : email // ignore: cast_nullable_to_non_nullable
+as String?,role: freezed == role ? _self.role : role // ignore: cast_nullable_to_non_nullable
 as String?,password: freezed == password ? _self.password : password // ignore: cast_nullable_to_non_nullable
+as String?,
+  ));
+}
+
+
+}
+
+/// @nodoc
+@JsonSerializable()
+
+class PaginatedUserDTO implements UserDTO {
+  const PaginatedUserDTO({this.id, this.name, this.email, this.password, this.role, final  String? $type}): $type = $type ?? 'paginated';
+  factory PaginatedUserDTO.fromJson(Map<String, dynamic> json) => _$PaginatedUserDTOFromJson(json);
+
+ final  int? id;
+@override final  String? name;
+@override final  String? email;
+@override final  String? password;
+@override final  String? role;
+
+@JsonKey(name: 'runtimeType')
+final String $type;
+
+
+/// Create a copy of UserDTO
+/// with the given fields replaced by the non-null parameter values.
+@override @JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$PaginatedUserDTOCopyWith<PaginatedUserDTO> get copyWith => _$PaginatedUserDTOCopyWithImpl<PaginatedUserDTO>(this, _$identity);
+
+@override
+Map<String, dynamic> toJson() {
+  return _$PaginatedUserDTOToJson(this, );
+}
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is PaginatedUserDTO&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.email, email) || other.email == email)&&(identical(other.password, password) || other.password == password)&&(identical(other.role, role) || other.role == role));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,id,name,email,password,role);
+
+@override
+String toString() {
+  return 'UserDTO.paginated(id: $id, name: $name, email: $email, password: $password, role: $role)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class $PaginatedUserDTOCopyWith<$Res> implements $UserDTOCopyWith<$Res> {
+  factory $PaginatedUserDTOCopyWith(PaginatedUserDTO value, $Res Function(PaginatedUserDTO) _then) = _$PaginatedUserDTOCopyWithImpl;
+@override @useResult
+$Res call({
+ int? id, String? name, String? email, String? password, String? role
+});
+
+
+
+
+}
+/// @nodoc
+class _$PaginatedUserDTOCopyWithImpl<$Res>
+    implements $PaginatedUserDTOCopyWith<$Res> {
+  _$PaginatedUserDTOCopyWithImpl(this._self, this._then);
+
+  final PaginatedUserDTO _self;
+  final $Res Function(PaginatedUserDTO) _then;
+
+/// Create a copy of UserDTO
+/// with the given fields replaced by the non-null parameter values.
+@override @pragma('vm:prefer-inline') $Res call({Object? id = freezed,Object? name = freezed,Object? email = freezed,Object? password = freezed,Object? role = freezed,}) {
+  return _then(PaginatedUserDTO(
+id: freezed == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
+as int?,name: freezed == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
+as String?,email: freezed == email ? _self.email : email // ignore: cast_nullable_to_non_nullable
+as String?,password: freezed == password ? _self.password : password // ignore: cast_nullable_to_non_nullable
+as String?,role: freezed == role ? _self.role : role // ignore: cast_nullable_to_non_nullable
 as String?,
   ));
 }

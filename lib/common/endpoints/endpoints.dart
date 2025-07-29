@@ -10,7 +10,7 @@ class Endpoints {
   static const String userPaginated = '$_baseUrl/user/paginated';
   static const String userPaginatedInactive =
       '$_baseUrl/user/paginated/inactive';
-  static String updateUser(int id) => '$_baseUrl/user/$id';
+  static String updateUser = '$_baseUrl/user';
   static const String deleteUser = '$_baseUrl/user/'; // via query param ?id=
 
   // Clients
@@ -18,6 +18,7 @@ class Endpoints {
   static const String addUserToClient =
       '$_baseUrl/clients'; // via PUT com query param userId & clientId
   static const String clientPaginated = '$_baseUrl/clients/paginated';
+
   static String updateClient = '$_baseUrl/clients';
   static const String deleteClient =
       '$_baseUrl/clients'; // via query param ?id=
